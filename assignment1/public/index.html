@@ -1,28 +1,48 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
     <title>MyEatz</title>
-    <link rel="stylesheet" href="css/bootstrap-responsive.min.css"></link>
-	<link rel="stylesheet" href="css/bootstrap.min.css"></link>
-  </head>
-  <body>
-    <section id="myeatz">
-      <header id="header"></header>
-      <section id="content"></section>
-      <footer id="footer"></footer>
-    </section>
 
+    <link rel="stylesheet" href="css/bootstrap-responsive.min.css"></link>
+    <link rel="stylesheet" href="css/bootstrap.min.css"></link>
+    <link rel="stylesheet" href="css/custom.css"></link>
+
+    <style>
+      body {
+        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <div id="headerContent"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div id="content" class="centered"></div>
+    </div>
+
+    <!-- Script section -->
     <script src="js/lib/jquery-min.js"></script>
-    <script src="js/lib/underscore.js"></script>
+    <script src="js/lib/underscore-min.js"></script>
     <script src="js/lib/backbone-min.js"></script>
     <script src="js/lib/backbone.localStorage.js"></script>
     <script src="js/lib/bootstrap.min.js"></script>
 	
-	<script src="js/views/home.js"></script>
+  	<script src="js/views/home.js"></script>
+    <script src="js/views/header.js"></script>
+    <script src="js/views/about.js"></script>
 
-	<script src="js/utils.js"></script>
-	<script src="js/main.js"></script>
+  	<script src="js/utils.js"></script>
+  	<script src="js/main.js"></script>
   </body>
 </html>

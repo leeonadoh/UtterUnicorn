@@ -4,12 +4,12 @@ var eatz =  eatz || {};
 eatz.HomeView = Backbone.View.extend({
 
     initialize: function () {
-	this.render();
+		this.render();
     },
 
     render: function () {
-	this.$el.html(this.template());  // create DOM content for HomeView
-	return this;    // support chaining
+		this.$el.html(this.template());  // create DOM content for HomeView
+		return this;    // support chaining
     }
 
 });
