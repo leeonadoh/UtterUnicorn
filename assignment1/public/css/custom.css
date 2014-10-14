@@ -1,0 +1,16 @@
+.homeCentered {
+  	text-align: center;
+  	padding-top: 200px;
+}
+
+.btnTranslucent {
+	opacity: 0.75;
+}
+
+.homeBackground {
+  	background: url("/img/homeBg.jpg") no-repeat center center fixed;
+  	-webkit-background-size: cover;
+  	-moz-background-size: cover;
+  	-o-background-size: cover;
+  	background-size: cover;
+}

@@ -23,27 +23,31 @@ eatz.AppRouter = Backbone.Router.extend({
             this.homeView = new eatz.HomeView();
         };
         $('#content').html(this.homeView.el);
+        $('body').attr("class", "homeBackground");
     },
 
     about: function() {
         if (!this.aboutView) {  
             this.aboutView = new eatz.AboutView();
         };
-        $('#content').html(this.aboutView.el);    
+        $('#content').html(this.aboutView.el);
+        $('body').attr("class", "");    
     },
 
     edit: function() {
         if (!this.editView) {  
             this.editView = new eatz.EditView();
         };
-        $('#content').html(this.editView.el);    
+        $('#content').html(this.editView.el);
+        $('body').attr("class", "");    
     },
 
     browse: function() {
         if (!this.browseView) {  
             this.browseView = new eatz.BrowseView();
         };
-        $('#content').html(this.browseView.el);    
+        $('#content').html(this.browseView.el);
+        $('body').attr("class", "");    
     }
 
 });
