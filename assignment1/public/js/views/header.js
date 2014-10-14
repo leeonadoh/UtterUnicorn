@@ -18,9 +18,8 @@ eatz.HeaderView = Backbone.View.extend({
 	selectMenuItem: function (menuItem) {
 		this.$("li").each(function(index) {
 			$(this).removeClass("active");
-		})
-		this.$(menuItem.target).parent().addClass("active");
-
+		});
+		this.$("#" + $(menuItem.target).attr("id")).parent().addClass("active");
 	}
 
 });

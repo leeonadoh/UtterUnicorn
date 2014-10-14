@@ -5,7 +5,7 @@ eatz.AppRouter = Backbone.Router.extend({
     routes: {
         "": "home",
         "about": "about",
-        "edit": "edit",
+        "dishes/add": "edit",
         "dishes": "browse",
         "dishes/:id": "edit"
     },
