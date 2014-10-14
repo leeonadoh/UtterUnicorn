@@ -4,7 +4,10 @@ eatz.AppRouter = Backbone.Router.extend({
 
     routes: {
         "": "home",
-        "about": "about"
+        "about": "about",
+        "edit": "edit",
+        "dishes": "browse",
+        "dishes/:id": "edit"
     },
 
     initialize: function() {
@@ -27,11 +30,25 @@ eatz.AppRouter = Backbone.Router.extend({
             this.aboutView = new eatz.AboutView();
         };
         $('#content').html(this.aboutView.el);    
+    },
+
+    edit: function() {
+        if (!this.editView) {  
+            this.editView = new eatz.EditView();
+        };
+        $('#content').html(this.editView.el);    
+    },
+
+    browse: function() {
+        if (!this.browseView) {  
+            this.browseView = new eatz.BrowseView();
+        };
+        $('#content').html(this.browseView.el);    
     }
 
 });
 
-eatz.utils.loadTemplates(['HomeView', 'HeaderView', 'AboutView'], function() {
+eatz.utils.loadTemplates(['HomeView', 'HeaderView', 'AboutView', 'EditView', 'BrowseView'], function() {
     app = new eatz.AppRouter();
     Backbone.history.start();
 });
