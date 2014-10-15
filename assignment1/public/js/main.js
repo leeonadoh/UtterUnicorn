@@ -48,15 +48,9 @@ eatz.AppRouter = Backbone.Router.extend({
         if (!this.browseView) {  
             this.browseView = new eatz.BrowseView();
         };
+        this.browseView.delegateEvents();
         $('#content').html(this.browseView.el);
         $('body').attr("class", "");    
-    },
-
-    dish: function() {
-        if (!this.dishView) {  
-            this.dishView = new eatz.DishView();
-        };
-        $('#dish').html(this.dishView.el);    
     }
 
 });
