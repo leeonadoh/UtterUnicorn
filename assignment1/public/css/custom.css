@@ -1,7 +1,7 @@
 .homeCentered {
-  	text-align: center;
-  	background-color: rgba(240, 240, 240, 0.6);
-  	width: 50%;
+    text-align: center;
+    background-color: rgba(240, 240, 240, 0.6);
+    width: 50%;
     margin: 0 auto;
     padding-top: 20px;
     padding-bottom: 25px;
@@ -10,30 +10,50 @@
 }
 
 .homePadding {
-  	padding-top: 200px;	
+    padding-top: 200px;	
 }
 
 .homeBrand{
-	font-size: 70px;
-	font-weight: normal;
-	padding-bottom: 20px;
-	padding-top: 15px;
+    font-size: 70px;
+    font-weight: normal;
+    padding-bottom: 20px;
+    padding-top: 15px;
 }
 
 .homeTxt{
-	font-weight: normal;
-	padding-bottom: 10px;
+    font-weight: normal;
+    padding-bottom: 10px;
+}
+
+.btnIcon{
+    padding-right: 5px;
+    width: 40px;
+    height: 30px;
 }
 
 .btnTranslucent {
-	background-color: rgba(100, 100, 100, 0.3);
-	background-image: none;
+    background-color: rgba(100, 100, 100, 0.3);
+    background-image: none;
 }
 
 .homeBackground {
-  	background: url("../img/homeBg.jpg") no-repeat center center fixed;
-  	-webkit-background-size: cover;
-  	-moz-background-size: cover;
-  	-o-background-size: cover;
-  	background-size: cover;
+    background: url("../img/homeBg.jpg") no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+/* Select path ./a/img from navItem */
+.navItem a img{
+    width: 20px;
+    height: 20px;
+    padding-right: 3px;
+    opacity: 0.5;
+}
+
+/* Set to full opacity on hover or active */
+.navItem:hover a img,
+.navItem.active a img{
+    opacity: 1;
 }
