@@ -1,10 +1,33 @@
 .homeCentered {
   	text-align: center;
-  	padding-top: 200px;
+  	background-color: rgba(240, 240, 240, 0.6);
+  	width: 50%;
+    margin: 0 auto;
+    padding-top: 20px;
+    padding-bottom: 25px;
+    border-radius: 10px;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.25);
+}
+
+.homePadding {
+  	padding-top: 200px;	
+}
+
+.homeBrand{
+	font-size: 70px;
+	font-weight: normal;
+	padding-bottom: 20px;
+	padding-top: 15px;
+}
+
+.homeTxt{
+	font-weight: normal;
+	padding-bottom: 10px;
 }
 
 .btnTranslucent {
-	opacity: 0.75;
+	background-color: rgba(100, 100, 100, 0.3);
+	background-image: none;
 }
 
 .homeBackground {
