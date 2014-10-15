@@ -19,7 +19,6 @@ eatz.EditView = Backbone.View.extend({
     	this.$addressStreet = this.$("#addressStreet");
     	this.$addressCity = this.$("#addressCity");
     	this.$province = this.$("#province");
-    	eatz.Dishes.fetch();
     },
 
     render: function () {
@@ -30,15 +29,18 @@ eatz.EditView = Backbone.View.extend({
     save: function (menuItem) {
     	var dish = new eatz.DishModel();
     	dish.set(this.newAttributes());
-    	dish.save();
     	eatz.Dishes.add(dish);
+    	dish.save();
     	//eatz.Dishes.create(this.newAttributes());
     	//this.addOne(dish);
     	this.selectMenuItem(menuItem);
+    	this.resetForms();
+
     },
 
     delete: function (menuItem) {
     	this.selectMenuItem(menuItem);
+    	this.resetForms();
     },
 
     newAttributes: function() {
@@ -61,9 +63,16 @@ eatz.EditView = Backbone.View.extend({
 		app.headerView.$("a[href$=\"" + $(menuItem.target).attr("href").substring(1)  + "\"]").parent().addClass("active");
 	},
 
-    addOne: function (dish) {
-		var view = new eatz.DishView({ model: dish });
-    	eatz.browseView.$('#dish-list').append( view.render().el );
-    }
+	resetForms: function()
+	{
+		this.$("#dishName").val("");
+		this.$("#serverName").val("");
+		this.$("#info").val("");
+		this.$("#webSiteUrl").val("");
+		this.$("#addressNumber").val("");
+		this.$("#addressStreet").val("");
+		this.$("#addressCity").val("");
+		this.$("#province").val("");
+	}
 
 });

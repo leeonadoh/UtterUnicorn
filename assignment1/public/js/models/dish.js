@@ -2,8 +2,6 @@ var eatz =  eatz || {};
 
 eatz.DishModel = Backbone.Model.extend({
 
-	localStorage: new Backbone.LocalStorage('eatz'),
-
 	idAttribute: "_id",
 
 	defaults: {
