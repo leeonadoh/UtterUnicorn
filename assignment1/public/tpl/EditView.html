@@ -1,28 +1,29 @@
 <div>
-	<button type="button" class="btn btn-large" id="save">Save</button>
-	<button type="button" class="btn btn-large" id="delete">Delete</button>
+	<a class="btn btn-large" id="save" href="#dishes">Save</a>
+	<a class="btn btn-large" id="delete" href="#dishes">Delete</a>
 	<br>
 	<h1>Dish Details</h1>
 	<div class="row">
 		<div class="span2" align="right">Dish</div>
-		<div class="span2"><input type="text" name="dishName" class="span2"></div>
+		<div class="span2"><input type="text" id="dishName" class="span2"></div>
 	</div>
 	<div class="row">
 		<div class="span2" align="right">Served By</div>
-		<div class="span2"><input type="text" name="serverName" class="span2"></div>
+		<div class="span2"><input type="text" id="serverName" class="span2"></div>
 	</div>
 	<div class="row">
 		<div class="span2" align="right">Dish/Venue Info</div>
-		<div class="span2"><input type="text" name="info" class="span4"></div>
+		<div class="span2"><input type="text" id="info" class="span4"></div>
 	</div>
 	<div class="row">
 		<div class="span2" align="right">Web site URL</div>
-		<div class="span2"><input type="text" name="webSiteUrl" class="span3"></div>
+		<div class="span2"><input type="text" id="webSiteUrl" class="span3"></div>
 	</div>
 	<div class="row">
-		<div class="span2" align="right">Street Address<br>(number,street,city)</div>
-		<div class="span5"><input type="text" name="addressNumber" class="span1">
-		<input type="text" name="addressStreet" class="span3"><br>
-		<input type="text" name="addressCity" class="span2"></div>
+		<div class="span2" align="right">Street Address<br>(number,street,<br>city,province)</div>
+		<div class="span5"><input type="text" id="addressNumber" class="span1">
+		<input type="text" id="addressStreet" class="span3"><br>
+		<input type="text" id="addressCity" class="span2">
+      	<input type="text" id="province" class="span1"></div>
 	</div>
 </div>
