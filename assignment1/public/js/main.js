@@ -39,10 +39,10 @@ eatz.AppRouter = Backbone.Router.extend({
         if (!this.editView) {  
             this.editView = new eatz.EditView();
         };
-        this.editView.delegateEvents();
         $('#content').html(this.editView.el);
         $('body').attr("class", "");
         this.editView.addMode();    
+        this.editView.delegateEvents();
     },
 
     browse: function() {
@@ -59,10 +59,10 @@ eatz.AppRouter = Backbone.Router.extend({
         if (!this.editView) {  
             this.editView = new eatz.EditView();
         };
-        this.editView.delegateEvents();
         $('#content').html(this.editView.el);
         $('body').attr("class", "");
         this.editView.editMode(id);
+        this.editView.delegateEvents();
     }
 
 });
