@@ -46,12 +46,12 @@ eatz.AppRouter = Backbone.Router.extend({
     },
 
     browse: function() {
-        if (!this.browseView) {  
-            this.browseView = new eatz.BrowseView();
+        if (!this.dishesView) {  
+            this.dishesView = new eatz.DishesView();
         };
-        this.browseView.delegateEvents();
-        this.browseView.dishsDelegateEvents();
-        $('#content').html(this.browseView.el);
+        this.dishesView.delegateEvents();
+        this.dishesView.dishsDelegateEvents();
+        $('#content').html(this.dishesView.el);
         $('body').attr("class", "");    
     },
 
@@ -67,7 +67,7 @@ eatz.AppRouter = Backbone.Router.extend({
 
 });
 
-eatz.utils.loadTemplates(['HomeView', 'HeaderView', 'AboutView', 'EditView', 'BrowseView', 'DishView'], function() {
+eatz.utils.loadTemplates(['HomeView', 'HeaderView', 'AboutView', 'EditView', 'DishesView', 'DishView'], function() {
     app = new eatz.AppRouter();
     Backbone.history.start();
 });
