@@ -3,6 +3,10 @@ var eatz =  eatz || {};
 // note View-name (EditView) matches name of template EditView.html
 eatz.DishView = Backbone.View.extend({
 
+	events: {
+		"click": "changePage"
+	},
+
 	tagName: "div",
     className: "span4 dishTile",
 	tagName: 'div class=span3',
