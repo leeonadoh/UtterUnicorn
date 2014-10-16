@@ -12,7 +12,7 @@ eatz.DishModel = Backbone.Model.extend({
     	street: "Military Trail",
     	city: "Scarborough",
     	province: "ON",
-    	url: ""
+    	website: ""
 	}
   
 });

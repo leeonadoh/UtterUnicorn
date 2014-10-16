@@ -3,6 +3,8 @@ var eatz =  eatz || {};
 // note View-name (EditView) matches name of template EditView.html
 eatz.BrowseView = Backbone.View.extend({
 
+	dishViews : [],
+
 	events : {
 		"click #dish" : "clearHeader"
 	},
@@ -29,14 +31,19 @@ eatz.BrowseView = Backbone.View.extend({
     	var view = new eatz.DishView({
     		model: eatz.Dishes.at(eatz.Dishes.length - 1)
     	});
+    	this.dishViews.push(view);
+    	console.log(view.model.id);
+    	console.log("adding");
     	this.$("#dish-list").append(view.render().el);
     	console.log("success");
+    	console.log(view.model.id);
     },
 
     addOne: function (dish) {
     	var view = new eatz.DishView({
     		model: dish
     	});
+    	this.dishViews.push(view);
     	this.$("#dish-list").append(view.render().el);
     	console.log("success");
     },
@@ -56,7 +63,12 @@ eatz.BrowseView = Backbone.View.extend({
 		app.headerView.$("li").each(function(index) {
 			$(this).removeClass("active");
 		});
-		console.log("cleared");
+	},
+
+	dishsDelegateEvents: function() {
+		this.dishViews.forEach(function (dishV){
+			dishV.delegateEvents();
+		});
 	}
 
 

@@ -6,7 +6,7 @@ eatz.AppRouter = Backbone.Router.extend({
         "": "home",
         "about": "about",
         "dishes": "browse",
-        "dishes/add": "edit",
+        "dishes/add": "add",
         "dishes/:id": "edit"
     },
 
@@ -35,13 +35,14 @@ eatz.AppRouter = Backbone.Router.extend({
         $('body').attr("class", "");
     },
 
-    edit: function() {
+    add: function() {
         if (!this.editView) {  
             this.editView = new eatz.EditView();
         };
         this.editView.delegateEvents();
         $('#content').html(this.editView.el);
-        $('body').attr("class", "");    
+        $('body').attr("class", "");
+        this.editView.addMode();    
     },
 
     browse: function() {
@@ -49,8 +50,19 @@ eatz.AppRouter = Backbone.Router.extend({
             this.browseView = new eatz.BrowseView();
         };
         this.browseView.delegateEvents();
+        this.browseView.dishsDelegateEvents();
         $('#content').html(this.browseView.el);
         $('body').attr("class", "");    
+    },
+
+    edit: function(id) {
+        if (!this.editView) {  
+            this.editView = new eatz.EditView();
+        };
+        this.editView.delegateEvents();
+        $('#content').html(this.editView.el);
+        $('body').attr("class", "");
+        this.editView.editMode(id);
     }
 
 });
