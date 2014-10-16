@@ -28,8 +28,10 @@ eatz.EditView = Backbone.View.extend({
 		return this;    // support chaining
     },
 
-    save: function (menuItem) {
-    	if (this.notEmptyFields()) {
+    save: function () {
+        this.clearErrors();
+    	if (this.validate()) {
+            console.log("valid input");
     		if (this.did != ""){
     			eatz.Dishes.get(this.did).set(this.newAttributes());
     			eatz.Dishes.get(this.did).save();
@@ -42,9 +44,10 @@ eatz.EditView = Backbone.View.extend({
 
 	    	//eatz.Dishes.create(this.newAttributes());
 	    	//this.addOne(dish);
-	    	this.selectMenuItem(menuItem);
+	    	this.selectBrowseDishes();
+            this.resetForms();
+            document.location.href = "#dishes";
     	};
-	   	this.resetForms();
     },
 
     delete: function (menuItem) {
@@ -66,11 +69,11 @@ eatz.EditView = Backbone.View.extend({
     	};
     },
 
-	selectMenuItem: function (menuItem) {
+	selectBrowseDishes: function () {
 		app.headerView.$("li").each(function(index) {
 			$(this).removeClass("active");
 		});
-		app.headerView.$("a[href$=\"" + $(menuItem.target).attr("href").substring(1)  + "\"]").parent().addClass("active");
+		app.headerView.$("#browse").parent().addClass("active");
 	},
 
 	resetForms: function() {
@@ -115,6 +118,9 @@ eatz.EditView = Backbone.View.extend({
 
 	addMode: function() {
 		this.$("#delete").hide();
+        if(this.did != ""){
+            this.resetForms();
+        }
 		this.did = "";
 	},
 
@@ -123,6 +129,50 @@ eatz.EditView = Backbone.View.extend({
 		this.did = id.substring(1);
 		console.log(eatz.Dishes.get(this.did));
 		this.setForms(eatz.Dishes.get(this.did));
-	}
+        this.clearErrors();
+	},
+
+	validate: function()
+	{
+        var valid = true;
+		if (!/\w/.test(this.$dishName.val().trim())){
+            this.$dishName.parent().addClass("error");
+            this.$("#dishNameForm").append("<span class=\"help-inline\" id=\"error\">Invalid Name</span>");
+            valid = false;
+		};
+        if (!/\w/.test(this.$serverName.val().trim())){
+            this.$serverName.parent().addClass("error");
+            this.$("#venueForm").append("<span class=\"help-inline\" id=\"error\">Invalid Name</span>");
+            valid = false;
+
+        };
+        if (!/\w/.test(this.$info.val().trim())){
+            this.$info.parent().addClass("error");
+            this.$("#infoForm").append("<span class=\"help-inline\" id=\"error\">Invalid Info</span>");
+            valid = false;
+
+        };      
+        if (!/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/.test(this.$webSiteUrl.val().trim()) &&
+            (this.$webSiteUrl.val().trim())){
+            this.$webSiteUrl.parent().addClass("error");
+            this.$("#urlForm").append("<span class=\"help-inline\" id=\"error\">Invalid Url</span>");
+            valid = false;
+
+        };
+        if (!/\w/.test(this.$addressCity.val().trim()) || 
+            !/\w/.test(this.$province.val().trim()) ||
+            !/\w/.test(this.$addressStreet.val().trim()) || 
+            !/[0-9][a-zA-Z]?/.test(this.$addressNumber.val().trim())){
+            this.$addressCity.parent().addClass("error");
+            this.$("#addressForm").append("<span class=\"help-inline\" id=\"error\">Invalid Address</span>");
+            valid = false;
+        };
+        return valid;
+    },
+
+    clearErrors: function(){
+        this.$(".help-inline").remove();
+        this.$(".error").removeClass("error");
+    }
 
 });

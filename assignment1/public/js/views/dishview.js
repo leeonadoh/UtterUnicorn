@@ -7,7 +7,7 @@ eatz.DishView = Backbone.View.extend({
 		"click": "changePage"
 	},
 
-	tagName: 'div class=span6',
+	tagName: 'div class=span3',
 
     initialize: function () {
 		this.render();
