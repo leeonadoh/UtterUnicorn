@@ -36,7 +36,11 @@
     background-image: none;
 }
 
-.homeBackground {
+body {
+    background: url("../img/main-bg.png")
+}
+
+body.homeBackground {
     background: url("../img/homeBg.jpg") no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
@@ -56,4 +60,26 @@
 .navItem:hover a img,
 .navItem.active a img{
     opacity: 1;
+}
+
+.dishTile{
+    background-color: #fafafa;
+    opacity: 0.80;
+    border-radius: 5px;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.25);
+    margin-left: 20px;
+    margin-bottom: 20px;
+}
+
+.dishTile:hover{
+    opacity: 1;
+    box-shadow: 0 1px 7px rgba(0, 0, 0, 0.3);
+}
+
+.dishTile a{
+    color: #303030;
+}
+
+.dishTile a:hover{
+    text-decoration: none;
 }

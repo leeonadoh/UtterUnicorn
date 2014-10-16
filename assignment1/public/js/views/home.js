@@ -3,6 +3,8 @@ var eatz =  eatz || {};
 // note View-name (HomeView) matches name of template HomeView.html
 eatz.HomeView = Backbone.View.extend({
 
+	className: "homePadding",
+
 	events : {
 		"click" : "selectMenuItem"
 	},

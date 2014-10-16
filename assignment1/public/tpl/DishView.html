@@ -1,12 +1,9 @@
-<ul class="thumbnails">
-  <li class="span3">
-    <a class="thumbnail" align="center">
-      <img src="//placehold.it/200x150/992233" alt="" id="dish">
-      <p class="dishNameText"><%= name %></p>
-      <p class="dishVenueText">Served By <%= venue %></p>
-      <p class="dishBodyText"><%= info %></p>
-      <p class="dishAddressText">At <%= numbr %> <%= street %>, <%= city %> <%= province %></p>
-      <p class="dishAddressText"><%= website %></p>
-    </a>
-  </li>
-</ul>
+<a id="dish" href="#dishes/:<%= _id %>">
+	<h4 align="center"><%= name %></h4>
+	<p align="center">
+		Served by <%= venue %><br>
+		<%= info %><br>
+		<%= website %><br>
+		<%= numbr %> <%= street %>, <%= city %>, <%= province %>
+	</p>
+</a>
