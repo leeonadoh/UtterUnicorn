@@ -83,3 +83,19 @@ body.homeBackground {
 .dishTile a:hover{
     text-decoration: none;
 }
+
+.errorPrompt {
+    color: #b94a48;
+    display: none;
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+.control-group.address {
+    margin-bottom: 0px;
+}
+
+#save, #delete {
+    width: 75px;
+    margin-top: 10px;
+}

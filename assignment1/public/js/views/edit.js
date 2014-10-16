@@ -226,9 +226,9 @@ eatz.EditView = Backbone.View.extend({
     //Checks that the city input is valid
     validateCity: function(){        
         this.$addressCity.parent().removeClass("error");
-        this.$("#cityForm .help-inline").remove();
+        this.hideProvWarning();
         if (!/\w/.test(this.$addressCity.val().trim())){
-            this.$("#cityForm").append("<span class=\"help-inline\" id=\"error\">Invalid City</span>");
+            this.$("#provErrorPrompt").show(); 
             this.$addressCity.parent().addClass("error");
             return false;
         };
@@ -238,9 +238,9 @@ eatz.EditView = Backbone.View.extend({
     //Checks that the province input is valid
     validateProvince: function(){        
         this.$province.parent().removeClass("error");
-        this.$("#provinceForm .help-inline").remove();
+        this.hideProvWarning();
         if (!/\w/.test(this.$province.val().trim())){
-                this.$("#provinceForm").append("<span class=\"help-inline\" id=\"error\">Invalid Province</span>");
+            this.$("#provErrorPrompt").show(); 
             this.$province.parent().addClass("error");
             return false;
         };
@@ -250,9 +250,9 @@ eatz.EditView = Backbone.View.extend({
     //Checks that the street input is valid
     validateStreet: function(){       
         this.$addressStreet.parent().removeClass("error");
-        this.$("#streetForm .help-inline").remove(); 
+        this.hideStreetWarning(); 
         if (!/\w/.test(this.$addressStreet.val().trim())){
-                this.$("#streetForm").append("<span class=\"help-inline\" id=\"error\">Invalid Street</span>");
+            this.$("#streetErrorPrompt").show();
             this.$addressStreet.parent().addClass("error");
             return false;
         };
@@ -262,9 +262,9 @@ eatz.EditView = Backbone.View.extend({
     //Checks that the street number input is valid
     validateStreetNumber: function(){  
         this.$addressNumber.parent().removeClass("error");
-        this.$("#numberForm .help-inline").remove();      
+        this.hideStreetWarning();   
         if (!/[0-9][a-zA-Z]?/.test(this.$addressNumber.val().trim())){
-                this.$("#numberForm").append("<span class=\"help-inline\" id=\"error\">Invalid Street Number</span>");
+            this.$("#streetErrorPrompt").show();
             this.$addressNumber.parent().addClass("error");
             return false;
         };
@@ -272,6 +272,16 @@ eatz.EditView = Backbone.View.extend({
     },
 
     //Adds listeners to check if inputs are valid when they lose focus
+    hideStreetWarning: function(){
+        if (!this.$addressNumber.parent().hasClass("error") && !this.$addressStreet.parent().hasClass("error")){
+            this.$("#streetErrorPrompt").hide(); 
+        };
+    },
+    hideProvWarning: function(){
+        if (!this.$province.parent().hasClass("error") && !this.$addressCity.parent().hasClass("error")){
+            this.$("#provErrorPrompt").hide(); 
+        };
+    },
     liveValidate: function(){
         console.log("live validation on");
         this.$("#dishName").change($.proxy(this.validateDishName, this));
@@ -282,6 +292,8 @@ eatz.EditView = Backbone.View.extend({
         this.$("#addressStreet").change($.proxy(this.validateStreet, this));
         this.$("#addressNumber").change($.proxy(this.validateStreetNumber, this));
         this.$("#addressCity").change($.proxy(this.validateCity, this));
+        this.$("#streetErrorPrompt").hide(); 
+        this.$("#provErrorPrompt").hide(); 
     }
 
 });
