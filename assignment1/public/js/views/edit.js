@@ -6,11 +6,20 @@ eatz.EditView = Backbone.View.extend({
     //The id attribute of the current Dish in the EditView
     //If the current Dish is not yet created (ie adding) then did is ""
     did: "",
+    fileReaderSupported: true,
 
     //Events for clicking save and delete buttons
     events: {
         "click #save": "save",
-        "click #delete": "delete"
+        "click #delete": "delete",
+
+        "dragenter #dragAndDrop": "onDragEnter",
+        "dragleave #dragAndDrop": "onDragLeave",
+        "dragover #dragAndDrop": "onDragOver",
+        "drop #dragAndDrop": "onDragDrop",
+
+        "click #browseBtn": "clickHiddenBrowse",
+        "change #hiddenBrowse": "loadPicFromBrowse"
     },
 
     initialize: function () {
@@ -25,6 +34,90 @@ eatz.EditView = Backbone.View.extend({
         this.$addressStreet = this.$("#addressStreet");
         this.$addressCity = this.$("#addressCity");
         this.$province = this.$("#province");
+        this.$dropArea = this.$("#dragAndDrop");
+        this.$dropStatus = this.$("#statusText");
+        this.$hiddenBrowseBtn = this.$("#hiddenBrowse");
+        this.$browseBtn = this.$("#browseBtn");
+
+        // Check for presence of FileReader for comparability.
+        // Disable live preview + drag and dropping of files if not present.
+        if (typeof window.FileReader === "undefined"){
+            this.$dropStatus.html("Your browser does not support drag and drop. " +
+                "Use the below browse button instead (The image won't show up - it is expected.)");
+            this.$dropStatus.addClass("errorColor");
+            this.$dropArea.addClass("notSupported");
+            this.fileReaderSupported = false;
+        }
+    },
+
+    // Delegates clicks on the browse button to the hidden, ugly looking 
+    // browse input field.
+    clickHiddenBrowse: function(){
+        this.$hiddenBrowseBtn.click();
+    },
+
+    // Detects changes of the browse input field value, and attempts to load
+    // the specified file for live preview.
+    loadPicFromBrowse: function(e){
+        if (this.fileReaderSupported){
+            var file = e.target.files[0];
+            console.log(file);
+            this.loadImageToView(file);
+        }
+    },
+
+    // Fired when a file is dragged over the drop zone.
+    onDragOver: function(ev) { 
+        ev.preventDefault(); 
+    },
+
+    // Fired when a file has been detected over the drop zone.
+    onDragEnter: function(){
+        if (this.fileReaderSupported){
+            this.$dropArea.addClass("hover");
+        }
+    },
+
+    // Fired when a file has left the drop zone.
+    onDragLeave: function(){
+        if (this.fileReaderSupported){
+            this.$dropArea.removeClass("hover");
+        }
+    },
+
+    // When an item is dropped in the drop zone.
+    onDragDrop: function(e){
+        if (this.fileReaderSupported){
+            // Prevent browse from doing its default behavior.
+            e.preventDefault();
+            e.stopPropagation();
+            this.$dropArea.removeClass("hover");
+            // Retrieve file from the drop transfer
+            var file = e.originalEvent.dataTransfer.files[0];
+            // Test to see if image file. Load it to live preview if valid.
+            // Display error message if not.
+            if (!/image\/.*/.test(file.type)){
+                this.$dropStatus.html("Please drag and drop a image file.");
+                this.$dropStatus.addClass("error");
+            } else {
+                this.loadImageToView(file);
+            }
+        }
+    },
+
+    // Load the specified image file to the drag and drop / preview area.
+    loadImageToView: function(imageFile){
+        var reader = new window.FileReader();
+        var dragAndDropArea = this.$dropArea;
+
+        this.$dropStatus.html("");
+        this.$dropStatus.removeClass("error");
+        // Callback to change the background image of the preview window.
+        reader.onload = function (event) {
+            console.log(event.target);
+            dragAndDropArea.css("background-image", "url(" + event.target.result + ")");
+        };
+        reader.readAsDataURL(imageFile);
     },
 
     render: function () {
@@ -98,6 +191,8 @@ eatz.EditView = Backbone.View.extend({
         this.$("#addressStreet").val("");
         this.$("#addressCity").val("");
         this.$("#province").val("");
+        this.$dropArea.removeAttr("style");
+        this.$hiddenBrowseBtn.val("");
     },
 
     //Sets the input fields to match the values of the Dish being edited
@@ -110,6 +205,9 @@ eatz.EditView = Backbone.View.extend({
         this.$("#addressStreet").val(dish.get("street"));
         this.$("#addressCity").val(dish.get("city"));
         this.$("#province").val(dish.get("province"));
+        // This will be replaced with the saved image later on.
+        this.$dropArea.removeAttr("style");
+        this.$hiddenBrowseBtn.val("");
     },
 
     //not used

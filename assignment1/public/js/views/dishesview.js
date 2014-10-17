@@ -53,9 +53,8 @@ eatz.DishesView = Backbone.View.extend({
     },
 
 
-    //Fetches the Dishes collection from LocalStorage and adds all DishView to DishesView
+    //Adds all DishView to DishesView
     loadCollection: function () {
-        eatz.Dishes.fetch();
         this.addAll();
         console.log("Load finished");
     },

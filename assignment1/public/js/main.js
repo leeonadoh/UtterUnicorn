@@ -69,5 +69,6 @@ eatz.AppRouter = Backbone.Router.extend({
 
 eatz.utils.loadTemplates(['HomeView', 'HeaderView', 'AboutView', 'EditView', 'DishesView', 'DishView'], function() {
     app = new eatz.AppRouter();
+    eatz.Dishes.fetch();// Fetch dishes from local storage.
     Backbone.history.start();
 });
