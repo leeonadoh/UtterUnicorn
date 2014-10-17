@@ -62,32 +62,6 @@ body.homeBackground {
     opacity: 1;
 }
 
-.dishViewThumb {
-    display:block;
-    color: #303030;
-    opacity: 0.80;
-    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.25);
-    border-radius: 5px;
-
-    background: url("../img/foodTemp.jpg");
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
-    background-position: center center;
-    
-    height: 300px;
-    margin-left: 20px;
-    margin-bottom: 20px;
-}
-
-.dishViewThumb:hover{
-    opacity: 1;
-    color: #303030;
-    text-decoration: none;
-    box-shadow: 0 1px 7px rgba(0, 0, 0, 0.3);
-}
-
 .errorPrompt {
     color: #b94a48;
     display: none;

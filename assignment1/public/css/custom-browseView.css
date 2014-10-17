@@ -1,0 +1,62 @@
+.dishViewThumb {
+    display:block;
+    color: #303030;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.25);
+    border-radius: 5px;
+
+    background: url("../img/foodTemp.jpg");
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    background-position: center center;
+    
+    height: 300px;
+    margin-left: 20px;
+    margin-bottom: 20px;
+}
+
+.noWrapEllipsis {
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.dishViewThumb .dishTextContainer {
+    margin-top: 220px;
+    background-color: rgba(240, 240, 240, 0);
+    height: 40px;
+}
+
+.dishViewThumb .dishTextContainer h3 {
+    background-color: rgba(240, 240, 240, 0.6);
+    margin-bottom: 0px;
+    margin-top: 0px;
+}
+
+.dishViewThumb .dishTextContainer div {
+    display: none;
+}
+
+.dishViewThumb:hover{
+    color: #303030;
+    text-decoration: none;
+    box-shadow: 0 3px 9px rgba(0, 0, 0, 0.35);
+}
+
+.dishViewThumb:hover .dishTextContainer {
+    margin-top: 170px;
+    height: 120px;
+    background-color: rgba(240, 240, 240, 0.8);
+}
+
+.dishViewThumb:hover .dishTextContainer h3 {
+    background-color: rgba(240, 240, 240, 0);
+}
+
+.dishViewThumb:hover .dishTextContainer div {
+    display: block;
+}
