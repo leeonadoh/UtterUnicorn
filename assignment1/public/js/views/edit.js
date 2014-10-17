@@ -3,8 +3,11 @@ var eatz =  eatz || {};
 // note View-name (EditView) matches name of template EditView.html
 eatz.EditView = Backbone.View.extend({
 
+    //The id attribute of the current Dish in the EditView
+    //If the current Dish is not yet created (ie adding) then did is ""
 	did: "",
 
+    //Events for clicking save and delete buttons
 	events: {
 		"click #save": "save",
 		"click #delete": "delete"
@@ -13,6 +16,7 @@ eatz.EditView = Backbone.View.extend({
     initialize: function () {
     	//this.listenTo(eatz.Dishes, 'add', this.addOne);
 		this.render();
+        //naming doms
     	this.$dishName = this.$("#dishName");
     	this.$serverName = this.$("#serverName");
     	this.$info = this.$("#info");
@@ -28,15 +32,16 @@ eatz.EditView = Backbone.View.extend({
 		return this;    // support chaining
     },
 
+    //Save the changes to the current Dish or add a new Dish if it doesnt exist yet (ie did == "")
     save: function () {
         this.clearErrors();
-    	if (this.validate()) {
+    	if (this.validate()) { //Check if fields are valid first
             console.log("valid input");
-    		if (this.did != ""){
+    		if (this.did != ""){ //Editing a dish
                 console.log("valid edit");
     			eatz.Dishes.get(this.did).set(this.newAttributes());
     			eatz.Dishes.get(this.did).save();
-    		} else {
+    		} else { //Adding a dish
                 console.log("valid add");
 	    		var dish = new eatz.DishModel();
 		    	dish.set(this.newAttributes());
@@ -46,19 +51,21 @@ eatz.EditView = Backbone.View.extend({
 
 	    	//eatz.Dishes.create(this.newAttributes());
 	    	//this.addOne(dish);
-	    	this.selectBrowseDishes();
-            this.resetForms();
-            document.location.href = "#dishes";
+	    	this.selectBrowseDishes(); //Put active class in the DishesView header button
+            this.resetForms(); //Clear the input fields
+            document.location.href = "#dishes"; //Redirect page to the DishesView
     	};
     },
 
+    //Remove a dish from the collection and remove it's view
     delete: function () {
-    	this.selectBrowseDishes();
-    	this.deleteDish(this.did);
-    	this.resetForms();
-        document.location.href = "#dishes";
+    	this.selectBrowseDishes(); //Put active class in the DishesView header button
+    	this.deleteDish(this.did); //Destroy dish model
+    	this.resetForms(); //Clear the input fields
+        document.location.href = "#dishes"; //Redirect page to the DishesView
     },
 
+    //Collects values from fields and packs them into an object
     newAttributes: function() {
     	return {
 			name: this.$dishName.val().trim(),
@@ -72,6 +79,7 @@ eatz.EditView = Backbone.View.extend({
     	};
     },
 
+    //Put active class in the DishesView header button
 	selectBrowseDishes: function () {
 		app.headerView.$("li").each(function(index) {
 			$(this).removeClass("active");
@@ -79,6 +87,7 @@ eatz.EditView = Backbone.View.extend({
 		app.headerView.$("#browse").parent().addClass("active");
 	},
 
+    //Clear the input fields
 	resetForms: function() {
 		this.$("#dishName").val("");
 		this.$("#serverName").val("");
@@ -90,6 +99,7 @@ eatz.EditView = Backbone.View.extend({
 		this.$("#province").val("");
 	},
 
+    //Sets the input fields to match the values of the Dish being edited
 	setForms: function(dish){
 		this.$("#dishName").val(dish.get("name"));
 		this.$("#serverName").val(dish.get("venue"));
@@ -101,6 +111,8 @@ eatz.EditView = Backbone.View.extend({
 		this.$("#province").val(dish.get("province"));
 	},
 
+    //not used
+    /*
 	notEmptyFields: function() {
 		return this.$dishName.val().trim() &&
 		this.$serverName.val().trim() &&
@@ -110,14 +122,16 @@ eatz.EditView = Backbone.View.extend({
     	this.$addressCity.val().trim() &&
     	this.$province.val().trim() &&
 		this.$webSiteUrl.val().trim();
-	},
+	},*/
 
+    //Destroy the dish model
 	deleteDish: function(dishid){
 		console.log(eatz.Dishes.get(dishid));
 		console.log(this.did);
 		eatz.Dishes.get(dishid).destroy();
 	},
 
+    //Turns on the add mode (ie hide delete button and set did = "")
 	addMode: function() {
 		this.$("#delete").hide();
         if(this.did != ""){
@@ -127,6 +141,9 @@ eatz.EditView = Backbone.View.extend({
         this.liveValidate();
 	},
 
+    //Turns on the edit mode (ie shows the delete button and 
+    //set did to the id of the Dish model. Also removes any 
+    //leftover error messages from the previous dish.)
 	editMode: function(id) {
 		this.$("#delete").show();
 		this.did = id.substring(1);
@@ -136,6 +153,7 @@ eatz.EditView = Backbone.View.extend({
         this.liveValidate();
 	},
 
+    //Checks that all values in the input fields are valid
 	validate: function()
 	{
         var valid = true;
@@ -150,11 +168,13 @@ eatz.EditView = Backbone.View.extend({
         return valid;
     },
 
+    //Removes any error messages in the input fields
     clearErrors: function(){
         this.$(".help-inline").remove();
         this.$(".error").removeClass("error");
     },
 
+    //Checks that the dish name input is valid
     validateDishName: function(){
         this.$dishName.parent().removeClass("error");
         this.$("#dishNameForm .help-inline").remove();
@@ -166,6 +186,7 @@ eatz.EditView = Backbone.View.extend({
         return true;
     },
 
+    //Checks that the venue input is valid
     validateVenue: function(){
         this.$serverName.parent().removeClass("error");
         this.$("#venueForm .help-inline").remove();
@@ -177,6 +198,7 @@ eatz.EditView = Backbone.View.extend({
         return true;
     },
 
+    //Checks that the info input is valid
     validateInfo: function(){   
         this.$info.parent().removeClass("error");
         this.$("#infoForm .help-inline").remove();
@@ -188,6 +210,7 @@ eatz.EditView = Backbone.View.extend({
         return true;
     },
 
+    //Checks that the website input is valid
     validateUrl: function(){        
         this.$webSiteUrl.parent().removeClass("error");
         this.$("#urlForm .help-inline").remove();
@@ -200,6 +223,7 @@ eatz.EditView = Backbone.View.extend({
         return true;
     },
 
+    //Checks that the city input is valid
     validateCity: function(){        
         this.$addressCity.parent().removeClass("error");
         this.$("#cityForm .help-inline").remove();
@@ -211,6 +235,7 @@ eatz.EditView = Backbone.View.extend({
         return true;
     },
     
+    //Checks that the province input is valid
     validateProvince: function(){        
         this.$province.parent().removeClass("error");
         this.$("#provinceForm .help-inline").remove();
@@ -222,6 +247,7 @@ eatz.EditView = Backbone.View.extend({
         return true;
     },
 
+    //Checks that the street input is valid
     validateStreet: function(){       
         this.$addressStreet.parent().removeClass("error");
         this.$("#streetForm .help-inline").remove(); 
@@ -233,6 +259,7 @@ eatz.EditView = Backbone.View.extend({
         return true;
     },
 
+    //Checks that the street number input is valid
     validateStreetNumber: function(){  
         this.$addressNumber.parent().removeClass("error");
         this.$("#numberForm .help-inline").remove();      
@@ -244,10 +271,7 @@ eatz.EditView = Backbone.View.extend({
         return true;
     },
 
-
-
-
-
+    //Adds listeners to check if inputs are valid when they lose focus
     liveValidate: function(){
         console.log("live validation on");
         this.$("#dishName").change($.proxy(this.validateDishName, this));

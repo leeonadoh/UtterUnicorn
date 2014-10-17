@@ -22,11 +22,14 @@ eatz.DishView = Backbone.View.extend({
 		return this;    // support chaining
     },
 
+    //not used
+    /*
     updateView: function() {
     	this.$("#dish").attr("href", "#dishes/:" + this.model.id);
     	console.log("href has been changed to: " + "#dishes/:" + this.model.id);
-    },
+    },*/
 
+    //Redirect to the edit view of this dish
     changePage: function() {
     	document.location.href = "#dishes/:" + this.model.id;
     }

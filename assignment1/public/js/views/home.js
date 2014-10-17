@@ -18,6 +18,7 @@ eatz.HomeView = Backbone.View.extend({
 		return this;    // support chaining
     },
 
+    //Puts active class in the appropriate header button of headerView for buttons in the homeView
 	selectMenuItem: function (menuItem) {
 		app.headerView.$("li").each(function(index) {
 			$(this).removeClass("active");
