@@ -11,7 +11,7 @@ eatz.AppRouter = Backbone.Router.extend({
     },
 
     initialize: function() {
-	    this.home;
+        this.home;
         if (!this.headerView) { 
             this.headerView = new eatz.HeaderView();
         };

@@ -5,158 +5,158 @@ eatz.EditView = Backbone.View.extend({
 
     //The id attribute of the current Dish in the EditView
     //If the current Dish is not yet created (ie adding) then did is ""
-	did: "",
+    did: "",
 
     //Events for clicking save and delete buttons
-	events: {
-		"click #save": "save",
-		"click #delete": "delete"
-	},
+    events: {
+        "click #save": "save",
+        "click #delete": "delete"
+    },
 
     initialize: function () {
-    	//this.listenTo(eatz.Dishes, 'add', this.addOne);
-		this.render();
+        //this.listenTo(eatz.Dishes, 'add', this.addOne);
+        this.render();
         //naming doms
-    	this.$dishName = this.$("#dishName");
-    	this.$serverName = this.$("#serverName");
-    	this.$info = this.$("#info");
-    	this.$webSiteUrl = this.$("#webSiteUrl");
-    	this.$addressNumber = this.$("#addressNumber");
-    	this.$addressStreet = this.$("#addressStreet");
-    	this.$addressCity = this.$("#addressCity");
-    	this.$province = this.$("#province");
+        this.$dishName = this.$("#dishName");
+        this.$serverName = this.$("#serverName");
+        this.$info = this.$("#info");
+        this.$webSiteUrl = this.$("#webSiteUrl");
+        this.$addressNumber = this.$("#addressNumber");
+        this.$addressStreet = this.$("#addressStreet");
+        this.$addressCity = this.$("#addressCity");
+        this.$province = this.$("#province");
     },
 
     render: function () {
-		this.$el.html(this.template());  // create DOM content for EditView
-		return this;    // support chaining
+        this.$el.html(this.template());  // create DOM content for EditView
+        return this;    // support chaining
     },
 
     //Save the changes to the current Dish or add a new Dish if it doesnt exist yet (ie did == "")
     save: function () {
         this.clearErrors();
-    	if (this.validate()) { //Check if fields are valid first
+        if (this.validate()) { //Check if fields are valid first
             console.log("valid input");
-    		if (this.did != ""){ //Editing a dish
+            if (this.did != ""){ //Editing a dish
                 console.log("valid edit");
-    			eatz.Dishes.get(this.did).set(this.newAttributes());
-    			eatz.Dishes.get(this.did).save();
-    		} else { //Adding a dish
+                eatz.Dishes.get(this.did).set(this.newAttributes());
+                eatz.Dishes.get(this.did).save();
+            } else { //Adding a dish
                 console.log("valid add");
-	    		var dish = new eatz.DishModel();
-		    	dish.set(this.newAttributes());
-		    	eatz.Dishes.add(dish);
-		    	dish.save();
+                var dish = new eatz.DishModel();
+                dish.set(this.newAttributes());
+                eatz.Dishes.add(dish);
+                dish.save();
                 eatz.Dishes.trigger("add:newDish");
-    		}
+            }
 
-	    	//eatz.Dishes.create(this.newAttributes());
-	    	//this.addOne(dish);
-	    	this.selectBrowseDishes(); //Put active class in the DishesView header button
+            //eatz.Dishes.create(this.newAttributes());
+            //this.addOne(dish);
+            this.selectBrowseDishes(); //Put active class in the DishesView header button
             this.resetForms(); //Clear the input fields
             document.location.href = "#dishes"; //Redirect page to the DishesView
-    	};
+        };
     },
 
     //Remove a dish from the collection and remove it's view
     delete: function () {
-    	this.selectBrowseDishes(); //Put active class in the DishesView header button
-    	this.deleteDish(this.did); //Destroy dish model
-    	this.resetForms(); //Clear the input fields
+        this.selectBrowseDishes(); //Put active class in the DishesView header button
+        this.deleteDish(this.did); //Destroy dish model
+        this.resetForms(); //Clear the input fields
         document.location.href = "#dishes"; //Redirect page to the DishesView
     },
 
     //Collects values from fields and packs them into an object
     newAttributes: function() {
-    	return {
-			name: this.$dishName.val().trim(),
-    		venue: this.$serverName.val().trim(),
-    		info: this.$info.val().trim(),
-	    	numbr: this.$addressNumber.val().trim(),
-	    	street: this.$addressStreet.val().trim(),
-	    	city: this.$addressCity.val().trim(),
-	    	province: this.$province.val().trim(),
-    		website: this.$webSiteUrl.val().trim()
-    	};
+        return {
+            name: this.$dishName.val().trim(),
+            venue: this.$serverName.val().trim(),
+            info: this.$info.val().trim(),
+            numbr: this.$addressNumber.val().trim(),
+            street: this.$addressStreet.val().trim(),
+            city: this.$addressCity.val().trim(),
+            province: this.$province.val().trim(),
+            website: this.$webSiteUrl.val().trim()
+        };
     },
 
     //Put active class in the DishesView header button
-	selectBrowseDishes: function () {
-		app.headerView.$("li").each(function(index) {
-			$(this).removeClass("active");
-		});
-		app.headerView.$("#browse").parent().addClass("active");
-	},
+    selectBrowseDishes: function () {
+        app.headerView.$("li").each(function(index) {
+            $(this).removeClass("active");
+        });
+        app.headerView.$("#browse").parent().addClass("active");
+    },
 
     //Clear the input fields
-	resetForms: function() {
-		this.$("#dishName").val("");
-		this.$("#serverName").val("");
-		this.$("#info").val("");
-		this.$("#webSiteUrl").val("");
-		this.$("#addressNumber").val("");
-		this.$("#addressStreet").val("");
-		this.$("#addressCity").val("");
-		this.$("#province").val("");
-	},
+    resetForms: function() {
+        this.$("#dishName").val("");
+        this.$("#serverName").val("");
+        this.$("#info").val("");
+        this.$("#webSiteUrl").val("");
+        this.$("#addressNumber").val("");
+        this.$("#addressStreet").val("");
+        this.$("#addressCity").val("");
+        this.$("#province").val("");
+    },
 
     //Sets the input fields to match the values of the Dish being edited
-	setForms: function(dish){
-		this.$("#dishName").val(dish.get("name"));
-		this.$("#serverName").val(dish.get("venue"));
-		this.$("#info").val(dish.get("info"));
-		this.$("#webSiteUrl").val(dish.get("website"));
-		this.$("#addressNumber").val(dish.get("numbr"));
-		this.$("#addressStreet").val(dish.get("street"));
-		this.$("#addressCity").val(dish.get("city"));
-		this.$("#province").val(dish.get("province"));
-	},
+    setForms: function(dish){
+        this.$("#dishName").val(dish.get("name"));
+        this.$("#serverName").val(dish.get("venue"));
+        this.$("#info").val(dish.get("info"));
+        this.$("#webSiteUrl").val(dish.get("website"));
+        this.$("#addressNumber").val(dish.get("numbr"));
+        this.$("#addressStreet").val(dish.get("street"));
+        this.$("#addressCity").val(dish.get("city"));
+        this.$("#province").val(dish.get("province"));
+    },
 
     //not used
     /*
-	notEmptyFields: function() {
-		return this.$dishName.val().trim() &&
-		this.$serverName.val().trim() &&
-		this.$info.val().trim() &&
-    	this.$addressNumber.val().trim() &&
-    	this.$addressStreet.val().trim() &&
-    	this.$addressCity.val().trim() &&
-    	this.$province.val().trim() &&
-		this.$webSiteUrl.val().trim();
-	},*/
+    notEmptyFields: function() {
+        return this.$dishName.val().trim() &&
+        this.$serverName.val().trim() &&
+        this.$info.val().trim() &&
+        this.$addressNumber.val().trim() &&
+        this.$addressStreet.val().trim() &&
+        this.$addressCity.val().trim() &&
+        this.$province.val().trim() &&
+        this.$webSiteUrl.val().trim();
+    },*/
 
     //Destroy the dish model
-	deleteDish: function(dishid){
-		console.log(eatz.Dishes.get(dishid));
-		console.log(this.did);
-		eatz.Dishes.get(dishid).destroy();
-	},
+    deleteDish: function(dishid){
+        console.log(eatz.Dishes.get(dishid));
+        console.log(this.did);
+        eatz.Dishes.get(dishid).destroy();
+    },
 
     //Turns on the add mode (ie hide delete button and set did = "")
-	addMode: function() {
-		this.$("#delete").hide();
+    addMode: function() {
+        this.$("#delete").hide();
         if(this.did != ""){
             this.resetForms();
         }
-		this.did = "";
+        this.did = "";
         this.liveValidate();
-	},
+    },
 
     //Turns on the edit mode (ie shows the delete button and 
     //set did to the id of the Dish model. Also removes any 
     //leftover error messages from the previous dish.)
-	editMode: function(id) {
-		this.$("#delete").show();
-		this.did = id.substring(1);
-		console.log(eatz.Dishes.get(this.did));
-		this.setForms(eatz.Dishes.get(this.did));
+    editMode: function(id) {
+        this.$("#delete").show();
+        this.did = id.substring(1);
+        console.log(eatz.Dishes.get(this.did));
+        this.setForms(eatz.Dishes.get(this.did));
         this.clearErrors();
         this.liveValidate();
-	},
+    },
 
     //Checks that all values in the input fields are valid
-	validate: function()
-	{
+    validate: function()
+    {
         var valid = true;
         valid = this.validateDishName() && valid;
         valid = this.validateVenue() && valid;
