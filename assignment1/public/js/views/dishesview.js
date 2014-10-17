@@ -16,8 +16,8 @@ eatz.DishesView = Backbone.View.extend({
 		this.render();
     	this.loadCollection();
         //Listen to the Dishes collection for adding models
-    	this.listenTo(eatz.Dishes, "add", function(){
-    		console.log(eatz.Dishes);
+    	this.listenTo(eatz.Dishes, "add:newDish", function(){
+            console.log("browse view listend to new Dish.");
     		this.addNew();
     	});
     	console.log("browse view ready to listen");
@@ -79,7 +79,5 @@ eatz.DishesView = Backbone.View.extend({
 			dishV.delegateEvents();
 		});
 	}
-
-
 
 });

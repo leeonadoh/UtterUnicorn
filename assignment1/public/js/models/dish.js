@@ -3,6 +3,7 @@ var eatz =  eatz || {};
 eatz.DishModel = Backbone.Model.extend({
 
 	idAttribute: "_id",
+    id: "",
 
 	defaults: {
     	name: "",
@@ -13,6 +14,6 @@ eatz.DishModel = Backbone.Model.extend({
     	city: "Scarborough",
     	province: "ON",
     	website: ""
-	}
+	},
   
 });

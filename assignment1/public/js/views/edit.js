@@ -47,6 +47,7 @@ eatz.EditView = Backbone.View.extend({
 		    	dish.set(this.newAttributes());
 		    	eatz.Dishes.add(dish);
 		    	dish.save();
+                eatz.Dishes.trigger("add:newDish");
     		}
 
 	    	//eatz.Dishes.create(this.newAttributes());

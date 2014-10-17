@@ -3,13 +3,13 @@ var eatz =  eatz || {};
 // note View-name (EditView) matches name of template EditView.html
 eatz.DishView = Backbone.View.extend({
 
-	events: {
+/*	events: {
 		"click": "changePage"
-	},
+	},*/
 
-	tagName: "div",
-    className: "span4 dishTile",
-	tagName: 'div class=span3',
+	tagName: "a",
+    className: "span4 dishViewThumb",
+    id: "dish",
 
     initialize: function () {
 		this.render();
@@ -19,6 +19,7 @@ eatz.DishView = Backbone.View.extend({
 
     render: function () {
 		this.$el.html(this.template( this.model.attributes ));  // create DOM content for EditView
+        this.$el.attr("href", "#dishes/:" + this.model.id)
 		return this;    // support chaining
     },
 
