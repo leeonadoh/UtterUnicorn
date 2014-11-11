@@ -18,5 +18,16 @@ eatz.utils = {
         });
 
         $.when.apply(null, deferreds).done(callback);
+    },
+
+    uploadFile: function (imageFile, callback) {
+        $.ajax({
+            url: "dishes/image",
+            type: "POST",  
+            data: imageFile,
+            success: function (res) {
+                callback(res);
+            }
+        });
     }
 };

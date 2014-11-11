@@ -7,6 +7,7 @@ eatz.EditView = Backbone.View.extend({
     //If the current Dish is not yet created (ie adding) then did is ""
     did: "",
     fileReaderSupported: true,
+    image: {},
 
     //Events for clicking save and delete buttons
     events: {
@@ -118,6 +119,7 @@ eatz.EditView = Backbone.View.extend({
             dragAndDropArea.css("background-image", "url(" + event.target.result + ")");
         };
         reader.readAsDataURL(imageFile);
+        this.image = imageFile;
     },
 
     render: function () {
@@ -125,11 +127,16 @@ eatz.EditView = Backbone.View.extend({
         return this;    // support chaining
     },
 
+    saveImage: function (img) {
+        eatz.utils.uploadFile(img);
+    },
+
     //Save the changes to the current Dish or add a new Dish if it doesnt exist yet (ie did == "")
     save: function () {
         this.clearErrors();
         if (this.validate()) { //Check if fields are valid first
             console.log("valid input");
+            this.saveImage(this.image); //uploads the image to the database
             if (this.did != ""){ //Editing a dish
                 console.log("valid edit");
                 eatz.Dishes.get(this.did).set(this.newAttributes());
