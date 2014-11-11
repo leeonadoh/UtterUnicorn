@@ -20,14 +20,22 @@ eatz.utils = {
         $.when.apply(null, deferreds).done(callback);
     },
 
-    uploadFile: function (imageFile, callback) {
+    uploadFile: function (file, callback) {
+        console.log("saving file");
+        console.log(file);
+        var data = new FormData();
+        data.append('file', file);
+        console.log(data);  // file is the user-selected file object
         $.ajax({
-            url: "dishes/image",
             type: "POST",  
-            data: imageFile,
+            url: "dishes/image",
+            data: data,
+            processData: false,
+            contentType: false,
             success: function (res) {
                 callback(res);
             }
         });
+        console.log("saved file");
     }
 };

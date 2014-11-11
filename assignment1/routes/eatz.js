@@ -32,7 +32,7 @@ exports.getDish = function(req, res){
 
 exports.uploadImage = function (req, res) {
     // req.files is an object, attribute "file" is the HTML-input name attr
-    var filePath = req.files.file/*,   // ADD CODE
+    /*var filePath = req.files.file,   // ADD CODE
         tmpFile = ...  // ADD CODE to extract root file name 
     	imageURL = 'img/uploads/' + tmpFile,
         writeStream = __dirname + ...   // ADD CODE
@@ -45,7 +45,7 @@ exports.uploadImage = function (req, res) {
     });
 
     // ADD CODE to remove any temp files*/
-    console.log(filePath);
+    console.log(req.files);
 };
 
 //MONGO
