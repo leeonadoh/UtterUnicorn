@@ -1,0 +1,70 @@
+/*CSS for the edit view*/
+.errorPrompt {
+    display: none;
+    margin-left: 10px;
+}
+
+.errorColor{
+    color: #b94a48;
+}
+
+.control-group.address {
+    margin-bottom: 0px;
+}
+
+#save, #delete {
+    width: 75px;
+    margin-top: 10px;
+}
+
+#dragAndDropContainer{
+    max-width: 300px;
+    margin: 10px auto;
+}
+
+#dragAndDrop:before{
+    content: "";
+    display: block;
+    padding-top: 100%; 
+}
+
+#dragAndDrop{
+    display:block;
+    border-radius: 5px;
+
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    background-position: center center;
+
+    width: 100%;
+    position: relative;
+    background-image: repeating-linear-gradient(
+        45deg,
+        rgba(0, 0, 0, 0),
+        rgba(0, 0, 0, 0) 10px,
+        #9d9 10px,
+        #9d9 20px
+    );
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.25);
+}
+
+#dragAndDrop.notSupported{
+    background-image: repeating-linear-gradient(
+        45deg,
+        rgba(0, 0, 0, 0),
+        rgba(0, 0, 0, 0) 10px,
+        #ff8080 10px,
+        #ff8080 20px
+    );
+    -webkit-box-shadow:inset 0px 0px 0px 10px #ff8080;
+    -moz-box-shadow:inset 0px 0px 0px 10px #ff8080;
+    box-shadow:inset 0px 0px 0px 10px #ff8080;
+}
+
+#dragAndDrop.hover{
+    -webkit-box-shadow:inset 0px 0px 0px 10px #9d9;
+    -moz-box-shadow:inset 0px 0px 0px 10px #9d9;
+    box-shadow:inset 0px 0px 0px 10px #9d9;
+}

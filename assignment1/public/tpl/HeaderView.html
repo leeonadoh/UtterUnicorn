@@ -22,6 +22,32 @@
     </ul>
     <ul class="nav pull-right">
       <li><a href="#about">About</a></li>
+      <li class="dropdown">
+        <a id="accountBtn" data-toggle="dropdown" class="dropdown-toggle" href="#">
+          Sign In<b class="caret"></b>
+        </a>
+        <!-- Dropdown for logging in -->
+        <ul id="signInDropdown" class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+          <li class="nav-header">Sign In</li>
+          <li class="divider"></li>
+          <li id="signInForm">
+            <form class="form">
+              <input name="username" id="username" placeholder="Username" type="text"></input>
+              <input name="password" id="password" placeholder="Password" type="password"></input>
+              <p id="loginFailed"> Invalid credentials, try again.</p>
+              <button type="submit" id="btnLogin" class="btn btn-primary">Login</button>
+              <button type="button" id="btnSignUp" class="btn">Sign Up</button>
+            </form>
+          </li>
+        </ul>
+        <!-- Dropdown when logged in -->
+        <ul id="loggedInDropdown" class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+          <li class="nav-header">Logged in as Swag</li>
+          <li class="divider"></li>
+          <li><a href="#">Edit account</a></li>
+          <li><a href="#">Log out</a></li>
+        </ul>
+      </li>
     </ul>
   </div>
 </div>
