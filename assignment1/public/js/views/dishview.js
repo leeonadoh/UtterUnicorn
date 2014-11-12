@@ -8,7 +8,7 @@ eatz.DishView = Backbone.View.extend({
     },*/
 
     tagName: "a",
-    className: "span4 dishViewThumb",
+    className: "span4 dishViewLink",
     id: "dish",
 
     initialize: function () {

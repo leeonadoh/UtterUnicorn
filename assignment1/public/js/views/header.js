@@ -2,6 +2,8 @@ var eatz =  eatz || {};
 
 eatz.HeaderView = Backbone.View.extend({
 
+    className: "navbar-inner",
+
     events : {
         "click" : "selectMenuItem"
     },

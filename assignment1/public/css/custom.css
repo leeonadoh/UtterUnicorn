@@ -80,6 +80,11 @@ body.homeBackground {
     margin-top: 10px;
 }
 
+#dragAndDropContainer{
+    max-width: 300px;
+    margin: 10px auto;
+}
+
 #dragAndDrop:before{
     content: "";
     display: block;
