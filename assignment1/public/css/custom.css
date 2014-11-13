@@ -62,11 +62,11 @@ body.homeBackground {
     opacity: 1;
 }
 
-#signInForm form {
-    margin: 0px 0px 0px 0px;
+#signInDropdown form {
+    margin: 0px 0px 10px 0px;
 }
 
-#signInForm{
+#signInDropdown{
     padding: 15px;
 }
 
