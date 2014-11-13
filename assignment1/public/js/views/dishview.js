@@ -29,7 +29,7 @@ eatz.DishView = Backbone.View.extend({
     	  if (this.model.get("image") != "img/placeholder")
     	  {
             console.log("url(\"../img/uploads/" + this.model.get("image") + "360x270.png\")");
-        		this.$el.css("background", "url(\"../img/uploads/" + this.model.get("image") + "360x270.png\")"); 
+        		this.$el.css("background-image", "url(\"../img/uploads/" + this.model.get("image") + "360x270.png\")"); 
         		this.$el.css("background-repeat", "no-repeat");
         		this.$el.css("background-position", "center" );
     	  }

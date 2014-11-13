@@ -117,9 +117,9 @@ eatz.EditView = Backbone.View.extend({
         // Callback to change the background image of the preview window.
         reader.onload = function (event) {
             console.log(event.target);
-            dragAndDropArea.css("background-image", "url(" + event.target.result + ")");
             dragAndDropArea.css("max-width", "100%");
             dragAndDropArea.css("max-height", "100%");
+            dragAndDropArea.css("background-image", "url(" + event.target.result + ")");
         };
         reader.readAsDataURL(imageFile);
         this.image = imageFile;
@@ -283,9 +283,12 @@ eatz.EditView = Backbone.View.extend({
     
     setImage: function() {
 		  if (eatz.Dishes.get(this.did).get("image") != ("img/placeholder")) {
-		  		this.$("#dragAndDrop").css("background", "url(\"../img/uploads/" + eatz.Dishes.get(this.did).get("image") + "240x180.png\")");
+		  		this.$("#dragAndDrop").css("background-image", "url(\"../img/uploads/" + eatz.Dishes.get(this.did).get("image") + "240x180.png\")");
         		this.$("#dragAndDrop").css("background-repeat", "no-repeat"); 
         		this.$("#dragAndDrop").css("background-position", "center" );
+        		this.$("#dragAndDrop").css("height", "180px"); 
+        		this.$("#dragAndDrop").css("width", "240px" );
+        		
 		  }    
     },
 
