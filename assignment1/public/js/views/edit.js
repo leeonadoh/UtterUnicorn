@@ -118,6 +118,8 @@ eatz.EditView = Backbone.View.extend({
         reader.onload = function (event) {
             console.log(event.target);
             dragAndDropArea.css("background-image", "url(" + event.target.result + ")");
+            dragAndDropArea.css("max-width", "100%");
+            dragAndDropArea.css("max-height", "100%");
         };
         reader.readAsDataURL(imageFile);
         this.image = imageFile;
