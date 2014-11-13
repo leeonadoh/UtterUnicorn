@@ -76,6 +76,6 @@ body.homeBackground {
     color: #b94a48;
 }
 
-#loggedInDropdown {
-    display: none;
+#menuAccount {
+    /*display: none;*/
 }
