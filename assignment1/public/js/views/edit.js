@@ -282,6 +282,8 @@ eatz.EditView = Backbone.View.extend({
     setImage: function() {
 		  if (eatz.Dishes.get(this.did).get("image") != ("img/placeholder")) {
 		  		this.$("#dragAndDrop").css("background", "url(\"../img/uploads/" + eatz.Dishes.get(this.did).get("image") + "240x180.png\")");
+        		this.$("#dragAndDrop").css("background-repeat", "no-repeat"); 
+        		this.$("#dragAndDrop").css("background-position", "center" );
 		  }    
     },
 
