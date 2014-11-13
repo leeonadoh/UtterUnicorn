@@ -26,12 +26,13 @@ eatz.utils = {
         var data = new FormData();
         data.append('file', file);
         console.log(data);  // file is the user-selected file object
-        $.ajax({
+        var xhr = $.ajax({
             type: "POST",  
             url: "dishes/image",
             data: data,
             processData: false,
             contentType: false,
+            cache: false,
             success: function (res) {
                 callback(res);
             }

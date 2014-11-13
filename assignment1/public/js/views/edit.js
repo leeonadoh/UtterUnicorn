@@ -8,6 +8,7 @@ eatz.EditView = Backbone.View.extend({
     did: "",
     fileReaderSupported: true,
     image: {},
+    imageName: "",
 
     //Events for clicking save and delete buttons
     events: {
@@ -127,8 +128,39 @@ eatz.EditView = Backbone.View.extend({
         return this;    // support chaining
     },
 
-    saveImage: function (img) {
-        eatz.utils.uploadFile(img);
+    saveImage: function (img, i) {
+        var self = this;
+        eatz.utils.uploadFile(img, function (res) {
+            console.log(self);
+            self.saveModel(res);
+        });
+    },
+
+    saveModel: function (res){
+        if (this.did != ""){ //Editing a dish
+            console.log("valid edit");
+            eatz.Dishes.get(this.did).set(this.newAttributes());
+            if (res) {
+                eatz.Dishes.get(this.did).set("image", res);
+            }
+            eatz.Dishes.get(this.did).save();
+        } else { //Adding a dish
+            console.log("valid add");
+            var dish = new eatz.DishModel();
+            dish.set(this.newAttributes());
+            if (res) {
+                dish.set("image", res);
+            }
+            eatz.Dishes.add(dish);
+            dish.save();
+            eatz.Dishes.trigger("add:newDish");
+        }
+
+        //eatz.Dishes.create(this.newAttributes());
+        //this.addOne(dish);
+        this.selectBrowseDishes(); //Put active class in the DishesView header button
+        this.resetForms(); //Clear the input fields
+        document.location.href = "#dishes"; //Redirect page to the DishesView
     },
 
     //Save the changes to the current Dish or add a new Dish if it doesnt exist yet (ie did == "")
@@ -136,25 +168,11 @@ eatz.EditView = Backbone.View.extend({
         this.clearErrors();
         if (this.validate()) { //Check if fields are valid first
             console.log("valid input");
-            this.saveImage(this.image); //uploads the image to the database
-            if (this.did != ""){ //Editing a dish
-                console.log("valid edit");
-                eatz.Dishes.get(this.did).set(this.newAttributes());
-                eatz.Dishes.get(this.did).save();
-            } else { //Adding a dish
-                console.log("valid add");
-                var dish = new eatz.DishModel();
-                dish.set(this.newAttributes());
-                eatz.Dishes.add(dish);
-                dish.save();
-                eatz.Dishes.trigger("add:newDish");
+            if (!$.isEmptyObject(this.image)) {
+                this.saveImage(this.image); //uploads the image to the database
+            } else {
+                this.saveModel();
             }
-
-            //eatz.Dishes.create(this.newAttributes());
-            //this.addOne(dish);
-            this.selectBrowseDishes(); //Put active class in the DishesView header button
-            this.resetForms(); //Clear the input fields
-            document.location.href = "#dishes"; //Redirect page to the DishesView
         };
     },
 
@@ -200,6 +218,7 @@ eatz.EditView = Backbone.View.extend({
         this.$("#province").val("");
         this.$dropArea.removeAttr("style");
         this.$hiddenBrowseBtn.val("");
+        this.image = {};
     },
 
     //Sets the input fields to match the values of the Dish being edited
@@ -257,6 +276,13 @@ eatz.EditView = Backbone.View.extend({
         this.setForms(eatz.Dishes.get(this.did));
         this.clearErrors();
         this.liveValidate();
+        this.setImage();
+    },
+    
+    setImage: function() {
+		  if (eatz.Dishes.get(this.did).get("image") != ("img/placeholder")) {
+		  		this.$("#dragAndDrop").css("background", "url(\"../img/uploads/" + eatz.Dishes.get(this.did).get("image") + "240x180.png\")");
+		  }    
     },
 
     //Checks that all values in the input fields are valid
