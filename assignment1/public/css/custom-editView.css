@@ -68,3 +68,7 @@
     -moz-box-shadow:inset 0px 0px 0px 10px #9d9;
     box-shadow:inset 0px 0px 0px 10px #9d9;
 }
+
+.dndTopPadText {
+    margin-top: 10px;
+}

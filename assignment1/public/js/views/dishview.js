@@ -7,8 +7,8 @@ eatz.DishView = Backbone.View.extend({
         "click": "changePage"
     },*/
 
-    tagName: "a",
-    className: "span4 dishViewLink",
+    tagName: "div",
+    className: "span4",
     id: "dish",
 
     initialize: function () {
@@ -19,7 +19,6 @@ eatz.DishView = Backbone.View.extend({
 
     render: function () {
         this.$el.html(this.template( this.model.attributes ));  // create DOM content for EditView
-        this.$el.attr("href", "#dishes/:" + this.model.id)
         return this;    // support chaining
     },
 
