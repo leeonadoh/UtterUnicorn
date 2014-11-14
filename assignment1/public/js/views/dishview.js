@@ -13,14 +13,26 @@ eatz.DishView = Backbone.View.extend({
 
     initialize: function () {
         this.render();
+        this.setBackground();
         this.listenTo(this.model, 'destroy', this.remove);
         this.listenTo(this.model, 'change', this.render);
+        this.listenTo(this.model, 'change', this.setBackground);
     },
 
     render: function () {
         this.$el.html(this.template( this.model.attributes ));  // create DOM content for EditView
         return this;    // support chaining
     },
+    
+    setBackground: function () {
+    	  if (this.model.get("image") != "img/placeholder")
+    	  {
+            console.log("url(\"../img/uploads/" + this.model.get("image") + "360x270.png\")");
+        		this.$el.css("background-image", "url(\"../img/uploads/" + this.model.get("image") + "360x270.png\")"); 
+        		this.$el.css("background-repeat", "no-repeat");
+        		this.$el.css("background-position", "center" );
+    	  }
+    }
 
     //not used
     /*

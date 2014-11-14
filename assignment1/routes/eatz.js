@@ -32,20 +32,32 @@ exports.getDish = function(req, res){
 
 exports.uploadImage = function (req, res) {
     // req.files is an object, attribute "file" is the HTML-input name attr
-    /*var filePath = req.files.file,   // ADD CODE
-        tmpFile = ...  // ADD CODE to extract root file name 
-    	imageURL = 'img/uploads/' + tmpFile,
-        writeStream = __dirname + ...   // ADD CODE
+    var filePath = req.files.file.path,   // ADD CODE
+        tmpFile = filePath.split("/"),  // ADD CODE to extract root file name 
+        tmpFile = tmpFile[tmpFile.length-1],
+        tmpFile = tmpFile.split(".")[0],
+    	imageURL = 'public/img/uploads/' + tmpFile,
+        writeStream = __dirname.substring(0, __dirname.indexOf("routes")) + imageURL;   // ADD CODE
+        console.log(writeStream);
     // process EditView image
-    gm(filePath).resize(...).write(... , function(err) {  // ADD CODE
-	if (!err) {
-    	    // ADD CODE process DishesView image and return image filename to client
-	} else
-	    // ADD CODE to return error result to client
-    });
+    gm(filePath).resize(360, 270).write(writeStream + "360x270.png", function(err) {  // ADD CODE
+        if (!err) {
+            gm(filePath).resize(240, 180).write(writeStream + "240x180.png", function(err) {  // ADD CODE
+                if (!err) {
+                        console.log("resize success");
+                        res.send(tmpFile);
+                        res.end();
+                } else {
+                }
+            });
+        } else {
+        }
+            // ADD CODE to return error result to client
+    });    
+
 
     // ADD CODE to remove any temp files*/
-    console.log(req.files);
+    console.log("DONE");
 };
 
 //MONGO

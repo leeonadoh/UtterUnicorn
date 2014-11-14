@@ -3,9 +3,9 @@ var eatz =  eatz || {};
 eatz.DishModel = Backbone.Model.extend({
 
     idAttribute: "_id",
-    image: "img/placeholder",
 
     defaults: {
+        image: "img/placeholder",
         name: "",
         venue: "",
         info: "",
