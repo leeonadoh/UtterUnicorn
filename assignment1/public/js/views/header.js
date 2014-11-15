@@ -19,9 +19,7 @@ eatz.HeaderView = Backbone.View.extend({
     
     //Puts active class in the menuItem of header
     selectMenuItem: function (menuItem) {
-        this.$(".navItem").each(function(index) {
-            $(this).removeClass("active");
-        });
+        eatz.utils.deactivateHeaderItems();
         this.$(menuItem.target).closest(".navItem").addClass("active");
     }
 });

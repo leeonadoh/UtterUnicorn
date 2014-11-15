@@ -9,7 +9,6 @@ eatz.AppRouter = Backbone.Router.extend({
         "dishes/add": "add",
         "dishes/:id": "edit",
         "signUp": "addAccount",
-        "editAccount": "editAccount"
     },
 
     initialize: function() {
@@ -68,26 +67,19 @@ eatz.AppRouter = Backbone.Router.extend({
     },
 
     addAccount: function() {
-        if (!this.editAccView) {  
-            this.editAccView = new eatz.EditAccView();
-        };
-        $('#content').html(this.editAccView.el);    
+        if (!this.newAccView) {  
+            this.newAccView = new eatz.NewAccView();
+        }
+        $('#content').html(this.newAccView.el);    
         $('body').attr("class", "");
-        this.editAccView.addMode();
+        // Reset forms
+        this.newAccView.clearEntries();
+        this.newAccView.clearErrors();
     },
-
-    editAccount: function() {
-        if (!this.editAccView) {  
-            this.editAccView = new eatz.EditAccView();
-        };
-        $('#content').html(this.editAccView.el);    
-        $('body').attr("class", "");
-        this.editAccView.editMode();
-    }
 
 });
 
-eatz.utils.loadTemplates(['HomeView', 'HeaderView', 'AboutView', 'EditView', 'DishesView', 'DishView', "EditAccView"], function() {
+eatz.utils.loadTemplates(['HomeView', 'HeaderView', 'AboutView', 'EditView', 'DishesView', 'DishView', "NewAccView"], function() {
     app = new eatz.AppRouter();
     eatz.Dishes.fetch();// Fetch dishes from local storage.
     Backbone.history.start();

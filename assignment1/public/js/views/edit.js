@@ -202,9 +202,7 @@ eatz.EditView = Backbone.View.extend({
 
     //Put active class in the DishesView header button
     selectBrowseDishes: function () {
-        app.headerView.$("li").each(function(index) {
-            $(this).removeClass("active");
-        });
+        eatz.utils.deactivateHeaderItems();
         app.headerView.$("#browse").parent().addClass("active");
     },
 
@@ -317,7 +315,7 @@ eatz.EditView = Backbone.View.extend({
     validateDishName: function(){
         this.$dishName.parent().removeClass("error");
         this.$("#dishNameForm .help-inline").remove();
-        if (!/\w/.test(this.$dishName.val().trim())){
+        if (!eatz.utils.isWord(this.$dishName.val().trim())){
             this.$dishName.parent().addClass("error");
             this.$("#dishNameForm").append("<span class=\"help-inline\" id=\"error\">Invalid Name</span>");
             return false;
@@ -329,7 +327,7 @@ eatz.EditView = Backbone.View.extend({
     validateVenue: function(){
         this.$serverName.parent().removeClass("error");
         this.$("#venueForm .help-inline").remove();
-        if (!/\w/.test(this.$serverName.val().trim())){
+        if (!eatz.utils.isWord(this.$serverName.val().trim())){
             this.$serverName.parent().addClass("error");
             this.$("#venueForm").append("<span class=\"help-inline\" id=\"error\">Invalid Name</span>");
             return false;
@@ -341,7 +339,7 @@ eatz.EditView = Backbone.View.extend({
     validateInfo: function(){   
         this.$info.parent().removeClass("error");
         this.$("#infoForm .help-inline").remove();
-        if (!/\w/.test(this.$info.val().trim())){
+        if (!eatz.utils.isWord(this.$info.val().trim())){
             this.$info.parent().addClass("error");
             this.$("#infoForm").append("<span class=\"help-inline\" id=\"error\">Invalid Info</span>");
             return false;
@@ -353,7 +351,7 @@ eatz.EditView = Backbone.View.extend({
     validateUrl: function(){        
         this.$webSiteUrl.parent().removeClass("error");
         this.$("#urlForm .help-inline").remove();
-        if (!/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/.test(this.$webSiteUrl.val().trim()) &&
+        if (!eatz.utils.isValidURL(this.$webSiteUrl.val().trim()) &&
             (this.$webSiteUrl.val().trim())){
             this.$webSiteUrl.parent().addClass("error");
             this.$("#urlForm").append("<span class=\"help-inline\" id=\"error\">Invalid Url</span>");
@@ -366,7 +364,7 @@ eatz.EditView = Backbone.View.extend({
     validateCity: function(){        
         this.$addressCity.parent().removeClass("error");
         this.hideProvWarning();
-        if (!/\w/.test(this.$addressCity.val().trim())){
+        if (!eatz.utils.isWord(this.$addressCity.val().trim())){
             this.$("#provErrorPrompt").show(); 
             this.$addressCity.parent().addClass("error");
             return false;
@@ -378,7 +376,7 @@ eatz.EditView = Backbone.View.extend({
     validateProvince: function(){        
         this.$province.parent().removeClass("error");
         this.hideProvWarning();
-        if (!/\w/.test(this.$province.val().trim())){
+        if (!eatz.utils.isWord(this.$province.val().trim())){
             this.$("#provErrorPrompt").show(); 
             this.$province.parent().addClass("error");
             return false;
@@ -390,7 +388,7 @@ eatz.EditView = Backbone.View.extend({
     validateStreet: function(){       
         this.$addressStreet.parent().removeClass("error");
         this.hideStreetWarning(); 
-        if (!/\w/.test(this.$addressStreet.val().trim())){
+        if (!eatz.utils.isWord(this.$addressStreet.val().trim())){
             this.$("#streetErrorPrompt").show();
             this.$addressStreet.parent().addClass("error");
             return false;
