@@ -25,9 +25,7 @@
 
       <!-- Dropdown for logging in -->
       <li id="menuLogin" class="dropdown">
-        <a id="loginBtn" data-toggle="dropdown" class="dropdown-toggle" href="#">
-          Sign In<b class="caret"></b>
-        </a>
+        <a id="loginBtn" data-toggle="dropdown" class="dropdown-toggle" href="#">Sign In</a>
         <ul class="dropdown-menu">
           <li class="nav-header">Log In</li>
           <li class="divider"></li>
@@ -49,13 +47,14 @@
       <!-- Dropdown when logged in -->
       <li id="menuAccount" class="dropdown">
         <a id="accountBtn" data-toggle="dropdown" class="dropdown-toggle" href="#">
-          Logged in as Swag<b class="caret"></b>
+          <div id="accountDependant">Logged in as Swag</div>
         </a>
         <ul id="loggedInDropdown" class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
-          <li class="nav-header">Logged in as Swag</li>
+          <li class="nav-header">
+            <div id="accountDependant">Logged in as Swag</div>
+          </li>
           <li class="divider"></li>
-          <li><a href="#editAccount">Edit account</a></li>
-          <li><a href="#">Log out</a></li>
+          <li><a href="#" id="btnLogoff">Log out</a></li>
         </ul>
       </li>
     </ul>

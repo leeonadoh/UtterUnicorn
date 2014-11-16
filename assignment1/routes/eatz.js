@@ -9,7 +9,7 @@ var fs = require('fs'),
     config = require(__dirname + '/../config'),  // port#, other params
     express = require("express"),
     bcrypt = require("bcrypt");
-
+    
 // Connect to database, using credentials specified in your config module
 mongoose.connect("mongodb://" + config.dbuser + ":" + config.dbpass +
             "@" + config.dbhost + "/" + config.dbname);
@@ -131,8 +131,7 @@ exports.logInOrOff = function(req, res) {
 exports.getDish = function(req, res){
     DishModel.findById(req.params.id, function(err, dish) {
         if (err) {
-            res.send(500, "Sorry, unable to retrieve dish at this time (" 
-                +err.message+ ")" );
+            res.send(500, "Sorry, unable to retrieve dish at this time (" +err.message+ ")" );
         } else if (!dish) {
             res.send(404, "Sorry, that dish doesn't exist; try reselecting from browse view");
         } else {
