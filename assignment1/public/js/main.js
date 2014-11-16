@@ -16,7 +16,9 @@ eatz.AppRouter = Backbone.Router.extend({
         if (!this.headerView) { 
             this.headerView = new eatz.HeaderView();
         };
+        this.headerView.delegateEvents()
         $('#headerContent').html(this.headerView.el);
+        eatz.utils.checkAuth();
     },
 
     home: function() {
@@ -32,6 +34,7 @@ eatz.AppRouter = Backbone.Router.extend({
         if (!this.aboutView) {  
             this.aboutView = new eatz.AboutView();
         };
+        this.aboutView.delegateEvents();
         $('#content').html(this.aboutView.el);    
         $('body').attr("class", "");
     },
@@ -75,6 +78,7 @@ eatz.AppRouter = Backbone.Router.extend({
         // Reset forms
         this.newAccView.clearEntries();
         this.newAccView.clearErrors();
+        this.newAccView.delegateEvents();
     },
 
 });

@@ -36,6 +36,12 @@ app.configure(function() {
         keepExtensions: true
     }));
 
+    // session config
+    app.use(express.cookieParser()); // populates req.signedCookies
+    app.use(express.session({key: config.sessionKey,
+        secret: config.sessionSecret,
+        cookie: {maxAge:config.sessionTimeout} }));
+
     // Perform route lookup based on URL and HTTP method,
     // Put app.router before express.static so that any explicit
     // app.get/post/put/delete request is called before static
@@ -60,7 +66,9 @@ app.get('/dishes/:id', eatz.getDish);
 app.post('/dishes/image', eatz.uploadImage);
 
 // ADD CODE to support other routes listed on assignment handout
-
+// Routes for user authentication. 
+app.post('/auth', eatz.signup); // User sign up.
+app.get('/auth', eatz.isAuthenticated); // Check if client is authorized.
 
 // Start HTTP server
 http.createServer(app).listen(app.get('port'), function () {

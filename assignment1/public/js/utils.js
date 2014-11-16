@@ -54,9 +54,27 @@ eatz.utils = {
         return /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/.test(url) || !(url.trim());
     },
 
-    deactivateHeaderItems: function(){
-        app.headerView.$(".navItem").each(function(index) {
-            $(this).removeClass("active");
+    // Check whether we are currently authenticated as a user. 
+    // Execute the necessary actions to show that we are logged in or off.
+    checkAuth: function(){
+        console.log("Checking authentication")
+        $.ajax({
+            url: '/auth',
+            type: 'GET',
+            success: function(res){
+                console.log("Auth check success.");
+                console.log(res);
+                if (res.userid){ // If authorized, execute actions to show logged in.
+                    app.headerView.showAccount(res.username);
+                } else {
+                    app.headerView.showSignIn();
+                }
+            }, 
+            error: function(err) {
+                console.log("Auth check failed.");
+                console.log(err);
+                app.headerView.showSignIn();
+            }
         });
     }
 };

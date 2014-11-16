@@ -202,7 +202,7 @@ eatz.EditView = Backbone.View.extend({
 
     //Put active class in the DishesView header button
     selectBrowseDishes: function () {
-        eatz.utils.deactivateHeaderItems();
+        app.headerView.deactivateMenuItems();
         app.headerView.$("#browse").parent().addClass("active");
     },
 
