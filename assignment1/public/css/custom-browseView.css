@@ -1,9 +1,12 @@
+#dish{
+    margin: 0px 0px 20px 20px;
+}
+
 .dishViewThumb {
     display:block;
     color: #303030;
     box-shadow: 0 1px 5px rgba(0, 0, 0, 0.25);
     border-radius: 5px;
-
     background-image: url("../img/dish-generic.png");
     -webkit-background-size: cover;
     -moz-background-size: cover;
@@ -11,11 +14,10 @@
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
-    
-    height: 270px;
-    width: 360px;
-    margin-left: 20px;
-    margin-bottom: 20px;
+
+    min-height: 270px;
+    max-width: 360px;
+    margin: 0px auto;
 }
 
 .noWrapEllipsis {
@@ -28,7 +30,8 @@
 }
 
 .dishViewThumb .dishTextContainer {
-    margin-top: 220px;
+    position: relative; 
+    top: 220px;
     background-color: rgba(240, 240, 240, 0);
     height: 40px;
 }
@@ -44,13 +47,13 @@
 }
 
 .dishViewThumb:hover{
-    color: #303030;
     text-decoration: none;
+    color: #303030;
     box-shadow: 0 3px 9px rgba(0, 0, 0, 0.35);
 }
 
 .dishViewThumb:hover .dishTextContainer {
-    margin-top: 170px;
+    top: 170px;
     height: 120px;
     background-color: rgba(240, 240, 240, 0.8);
 }
@@ -61,8 +64,4 @@
 
 .dishViewThumb:hover .dishTextContainer div {
     display: block;
-}
-
-.dndTopPadText {
-    margin-top: 10px;
 }

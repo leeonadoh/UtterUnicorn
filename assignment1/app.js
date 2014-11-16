@@ -59,6 +59,11 @@ app.get('/dishes/:id', eatz.getDish);
 // Upload an image file and perform image processing on it
 app.post('/dishes/image', eatz.uploadImage);
 
+app.get('/dishes', eatz.getDishes);
+app.post('/dishes', eatz.addDish);
+app.put('/dishes/:id', eatz.editDish);
+app.delete('/dishes/:id', eatz.deleteDish);
+
 // ADD CODE to support other routes listed on assignment handout
 
 

@@ -1,47 +1,47 @@
 <h1>Dish Details</h1>
 <br>
 <div class="row">
-    <div class="span10">
+    <div class="span7">
         <div class="row">
             <div class="span2" align="right">Dish</div>
-            <div class="span6 control-group" id="dishNameForm">
+            <div class="span5 control-group" id="dishNameForm">
                 <input type="text" id="dishName" class="span3" placeholder="Pad Thai">
             </div>
         </div>
         <div class="row">
             <div class="span2" align="right">Served By</div>
-            <div class="span6 control-group" id="venueForm">
+            <div class="span5 control-group" id="venueForm">
                 <input type="text" id="serverName" class="span4" placeholder="Thai Palace Restaurant">
             </div>
         </div>
         <div class="row">
             <div class="span2" align="right">Dish / Venue Info</div>
-            <div class="span6 control-group" id="infoForm">
-                <input type="text" id="info" class="span5" placeholder="Most authentic pad thai in town!">
+            <div class="span5 control-group" id="infoForm">
+                <input type="text" id="info" class="span4" placeholder="Most authentic pad thai in town!">
             </div>
         </div>
         <div class="row">
             <div class="span2" align="right">Web site URL</div>
-            <div class="span6 control-group" id="urlForm">
+            <div class="span5 control-group" id="urlForm">
                 <input type="text" id="webSiteUrl" class="span4" placeholder="www.getsumthai.com">
             </div>
         </div>
         <div class="row">
             <div class="span2" align="right">Address</div>
             <div class="span1 control-group address" id="numberForm">
-                <input type="text" id="addressNumber" class="span1" placeholder="# (10)">
+                <input type="text" id="addressNumber" class="span1" placeholder="10">
             </div>
-            <div class="span3 control-group address" id="streetForm">
-                <input type="text" id="addressStreet" class="span3" placeholder="Street Name (Main St.)">
+            <div class="span2 control-group address" id="streetForm">
+                <input type="text" id="addressStreet" class="span2" placeholder="Main St.">
             </div>
             <div id="streetErrorPrompt" class="span2 errorPrompt errorColor" >Invalid Street #/Name</div>
         </div>
         <div class="row">
             <div class="span2 offset2 control-group address" id="cityForm">
-                <input type="text" id="addressCity" class="span2" placeholder="City (Toronto)">
+                <input type="text" id="addressCity" class="span2" placeholder="Toronto">
             </div>
-            <div class="span2 control-group address" id="provinceForm">
-                <input type="text" id="province" class="span2" placeholder="Province (ON)">
+            <div class="span1 control-group address" id="provinceForm">
+                <input type="text" id="province" class="span1" placeholder="ON">
             </div>
             <div id="provErrorPrompt" class="span2 errorPrompt errorColor" >Invalid City/Province</div>
         </div>
@@ -49,8 +49,9 @@
         <a class="btn btn-large btn-primary" id="save">Save</a>
         <a class="btn btn-large" id="delete">Delete</a>
     </div>
-    <div class="span4" align="center">
-        <div id="dragAndDrop">
+    <div class="span4">
+        <div id="dragAndDropContainer" align="center">
+            <div id="dragAndDrop"></div>
         </div>
         <div align="center">
             <div id="statusText" class="dndTopPadText"></div>

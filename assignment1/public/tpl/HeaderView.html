@@ -1,20 +1,63 @@
-<a class="brand" href="#">MyEatz</a>
-<div class="nav-collapse collapse">
+<div class="container">
+  <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+    <span class="icon-bar"></span>
+    <span class="icon-bar"></span>
+    <span class="icon-bar"></span>
+  </button>
+  <a class="brand" href="#">MyEatz</a>
+  <div class="nav-collapse collapse">
     <ul class="nav">
-        <li class="navItem" >
-            <a href="#dishes" id="browse">
-                <img class="navIcon" src="img/nav-browse.png"></img>
-                Browse Dishes
-            </a>
-        </li>
-        <li class="navItem" >
-            <a href="#dishes/add" id="edit">
-                <img class="navIcon" src="img/nav-add.png"></img>
-                Add Dishes
-            </a>
-        </li>
+      <li class='navItem'>
+        <a href="#dishes" id="browse">
+          <img class="navIcon" src="img/nav-browse.png"></img>
+          Browse Dishes
+        </a>
+      </li>
+      <li class='navItem'>
+        <a href="#dishes/add" id="edit">
+          <img class="navIcon" src="img/nav-add.png"></img>
+          Add Dishes
+        </a>
+      </li>
     </ul>
     <ul class="nav pull-right">
-        <li><a href="#about">About</a></li>
+      <li class="navItem"><a href="#about">About</a></li>
+
+      <!-- Dropdown for logging in -->
+      <li id="menuLogin" class="dropdown">
+        <a id="loginBtn" data-toggle="dropdown" class="dropdown-toggle" href="#">
+          Sign In<b class="caret"></b>
+        </a>
+        <ul class="dropdown-menu">
+          <li class="nav-header">Log In</li>
+          <li class="divider"></li>
+          <li>
+            <div id="signInDropdown">
+              <form class="form">
+                <input name="username" id="username" placeholder="Username" type="text"></input>
+                <input name="password" id="password" placeholder="Password" type="password"></input>
+                <p id="loginFailed"> Invalid credentials, try again.</p> <br>
+                <button type="button" id="btnLogin" class="btn">Login</button>
+              </form>
+            </div>
+          </li>
+          <li class="divider"></li>
+          <li><a href="#signUp" id="btnSignUp">First time here? Sign Up!</a></li>
+        </ul>
+        
+      </li>
+      <!-- Dropdown when logged in -->
+      <li id="menuAccount" class="dropdown">
+        <a id="accountBtn" data-toggle="dropdown" class="dropdown-toggle" href="#">
+          Logged in as Swag<b class="caret"></b>
+        </a>
+        <ul id="loggedInDropdown" class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+          <li class="nav-header">Logged in as Swag</li>
+          <li class="divider"></li>
+          <li><a href="#editAccount">Edit account</a></li>
+          <li><a href="#">Log out</a></li>
+        </ul>
+      </li>
     </ul>
+  </div>
 </div>

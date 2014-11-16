@@ -4,7 +4,7 @@ eatz.DishesCollection = Backbone.Collection.extend({
 
     model: eatz.DishModel,
     
-    localStorage: new Backbone.LocalStorage('eatz')
+    url: "/dishes"
 });
 
 eatz.Dishes = new eatz.DishesCollection();

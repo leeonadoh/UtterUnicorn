@@ -7,13 +7,12 @@ eatz.DishView = Backbone.View.extend({
         "click": "changePage"
     },*/
 
-    tagName: "a",
-    className: "span4 dishViewThumb",
+    tagName: "div",
+    className: "span4",
     id: "dish",
 
     initialize: function () {
         this.render();
-        this.setBackground();
         this.listenTo(this.model, 'destroy', this.remove);
         this.listenTo(this.model, 'change', this.render);
         this.listenTo(this.model, 'change', this.setBackground);
@@ -21,18 +20,18 @@ eatz.DishView = Backbone.View.extend({
 
     render: function () {
         this.$el.html(this.template( this.model.attributes ));  // create DOM content for EditView
-        this.$el.attr("href", "#dishes/:" + this.model.id);
+        this.setBackground();
         return this;    // support chaining
     },
     
     setBackground: function () {
-    	  if (this.model.get("image") != "img/placeholder")
-    	  {
+    	  if (this.model.get("image") != "img/placeholder"){
             console.log("url(\"../img/uploads/" + this.model.get("image") + "360x270.png\")");
-        		this.$el.css("background-image", "url(\"../img/uploads/" + this.model.get("image") + "360x270.png\")"); 
-        		this.$el.css("background-repeat", "no-repeat");
-        		this.$el.css("background-position", "center" );
-    	  }
+            this.$(".dishViewThumb").css("background-image", "url(\"../img/uploads/" + this.model.get("image") + "360x270.png\")"); 
+            console.log("Modified thumbnail");
+    		//this.$(".dishViewThumb").css("background-repeat", "no-repeat");
+    		//this.$(".dishViewThumb").css("background-position", "center" );
+    	}
     }
 
     //not used

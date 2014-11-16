@@ -145,7 +145,11 @@ eatz.EditView = Backbone.View.extend({
             if (res) {
                 eatz.Dishes.get(this.did).set("image", res);
             }
-            eatz.Dishes.get(this.did).save();
+            eatz.Dishes.get(this.did).save(null, {
+                success: function () {
+                    document.location.href = "#dishes"; //Redirect page to the DishesView
+                }
+            });
         } else { //Adding a dish
             console.log("valid add");
             var dish = new eatz.DishModel();
@@ -154,15 +158,18 @@ eatz.EditView = Backbone.View.extend({
                 dish.set("image", res);
             }
             eatz.Dishes.add(dish);
-            dish.save();
-            eatz.Dishes.trigger("add:newDish");
+            dish.save(null, {
+                success: function () {
+                    eatz.Dishes.trigger("add:newDish");
+                    document.location.href = "#dishes"; //Redirect page to the DishesView
+                }
+            });
         }
 
         //eatz.Dishes.create(this.newAttributes());
         //this.addOne(dish);
         this.selectBrowseDishes(); //Put active class in the DishesView header button
         this.resetForms(); //Clear the input fields
-        document.location.href = "#dishes"; //Redirect page to the DishesView
     },
 
     //Save the changes to the current Dish or add a new Dish if it doesnt exist yet (ie did == "")
@@ -174,7 +181,7 @@ eatz.EditView = Backbone.View.extend({
                 this.saveImage(this.image); //uploads the image to the database
             } else {
                 this.saveModel();
-            }
+            };
         };
     },
 
@@ -202,9 +209,7 @@ eatz.EditView = Backbone.View.extend({
 
     //Put active class in the DishesView header button
     selectBrowseDishes: function () {
-        app.headerView.$("li").each(function(index) {
-            $(this).removeClass("active");
-        });
+        app.headerView.deactivateMenuItems();
         app.headerView.$("#browse").parent().addClass("active");
     },
 
@@ -286,9 +291,6 @@ eatz.EditView = Backbone.View.extend({
 		  		this.$("#dragAndDrop").css("background-image", "url(\"../img/uploads/" + eatz.Dishes.get(this.did).get("image") + "240x180.png\")");
         		this.$("#dragAndDrop").css("background-repeat", "no-repeat"); 
         		this.$("#dragAndDrop").css("background-position", "center" );
-        		this.$("#dragAndDrop").css("height", "180px"); 
-        		this.$("#dragAndDrop").css("width", "240px" );
-        		
 		  }    
     },
 
@@ -317,7 +319,7 @@ eatz.EditView = Backbone.View.extend({
     validateDishName: function(){
         this.$dishName.parent().removeClass("error");
         this.$("#dishNameForm .help-inline").remove();
-        if (!/\w/.test(this.$dishName.val().trim())){
+        if (!eatz.utils.isWord(this.$dishName.val().trim())){
             this.$dishName.parent().addClass("error");
             this.$("#dishNameForm").append("<span class=\"help-inline\" id=\"error\">Invalid Name</span>");
             return false;
@@ -329,7 +331,7 @@ eatz.EditView = Backbone.View.extend({
     validateVenue: function(){
         this.$serverName.parent().removeClass("error");
         this.$("#venueForm .help-inline").remove();
-        if (!/\w/.test(this.$serverName.val().trim())){
+        if (!eatz.utils.isWord(this.$serverName.val().trim())){
             this.$serverName.parent().addClass("error");
             this.$("#venueForm").append("<span class=\"help-inline\" id=\"error\">Invalid Name</span>");
             return false;
@@ -341,7 +343,7 @@ eatz.EditView = Backbone.View.extend({
     validateInfo: function(){   
         this.$info.parent().removeClass("error");
         this.$("#infoForm .help-inline").remove();
-        if (!/\w/.test(this.$info.val().trim())){
+        if (!eatz.utils.isWord(this.$info.val().trim())){
             this.$info.parent().addClass("error");
             this.$("#infoForm").append("<span class=\"help-inline\" id=\"error\">Invalid Info</span>");
             return false;
@@ -353,7 +355,7 @@ eatz.EditView = Backbone.View.extend({
     validateUrl: function(){        
         this.$webSiteUrl.parent().removeClass("error");
         this.$("#urlForm .help-inline").remove();
-        if (!/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/.test(this.$webSiteUrl.val().trim()) &&
+        if (!eatz.utils.isValidURL(this.$webSiteUrl.val().trim()) &&
             (this.$webSiteUrl.val().trim())){
             this.$webSiteUrl.parent().addClass("error");
             this.$("#urlForm").append("<span class=\"help-inline\" id=\"error\">Invalid Url</span>");
@@ -366,7 +368,7 @@ eatz.EditView = Backbone.View.extend({
     validateCity: function(){        
         this.$addressCity.parent().removeClass("error");
         this.hideProvWarning();
-        if (!/\w/.test(this.$addressCity.val().trim())){
+        if (!eatz.utils.isWord(this.$addressCity.val().trim())){
             this.$("#provErrorPrompt").show(); 
             this.$addressCity.parent().addClass("error");
             return false;
@@ -378,7 +380,7 @@ eatz.EditView = Backbone.View.extend({
     validateProvince: function(){        
         this.$province.parent().removeClass("error");
         this.hideProvWarning();
-        if (!/\w/.test(this.$province.val().trim())){
+        if (!eatz.utils.isWord(this.$province.val().trim())){
             this.$("#provErrorPrompt").show(); 
             this.$province.parent().addClass("error");
             return false;
@@ -390,7 +392,7 @@ eatz.EditView = Backbone.View.extend({
     validateStreet: function(){       
         this.$addressStreet.parent().removeClass("error");
         this.hideStreetWarning(); 
-        if (!/\w/.test(this.$addressStreet.val().trim())){
+        if (!eatz.utils.isWord(this.$addressStreet.val().trim())){
             this.$("#streetErrorPrompt").show();
             this.$addressStreet.parent().addClass("error");
             return false;
