@@ -50,17 +50,16 @@ eatz.HeaderView = Backbone.View.extend({
         });
     },
 
-    validateCridentials: function(){ // TODO notifications
-        var valid = true;
+    validateCridentials: function(){
         if (!eatz.utils.isWord(this.$username.val().trim())){
-            console.log("Invalid username.") // Switch to notifications.
-            valid = false;
+            eatz.utils.showNotification("alert-error", "Whoops!", " You've missed your user name.");
+            return false;
         }
         if (!eatz.utils.isWord(this.$password.val())){//Allow blank spaces in password?
-            console.log("Invalid password.") // Switch to notifications.
-            valid = false;
+            eatz.utils.showNotification("alert-error", "Whoops!", " You've missed your password.");
+            return false
         }
-        return valid;
+        return true;
     },
 
     fetchCridentials: function(isLogIn){
@@ -76,6 +75,7 @@ eatz.HeaderView = Backbone.View.extend({
         if (!this.validateCridentials()){
             return;
         }
+        eatz.utils.clearNotifications();
         // Then execute login.
         $.ajax({
             url: '/auth',
@@ -85,10 +85,10 @@ eatz.HeaderView = Backbone.View.extend({
             data: JSON.stringify(this.fetchCridentials(true)),
             success: function(res){
                 if (res.error){
-                    console.log('Sign in failed');
+                    eatz.utils.showNotification("alert-error", "Uh-Oh!", " We couldn't log you in at this time. Try again later.");
                 } else {
                     // Show notification of login
-                    console.log('Welcome ' + res.username);
+                    eatz.utils.showNotification("alert-success", "Uh-Oh!", " We couldn't log you in at this time. Try again later.");
                     console.log(res);
                     app.headerView.showAccount(res.username);
                     app.headerView.$signInMenu.removeClass("open");

@@ -77,4 +77,17 @@ eatz.utils = {
             }
         });
     },
+
+    showNotification: function(type, header, text){
+        var alertElement = 
+        "<div class='alert " + type + "'>" + 
+            "<button type='button' class='close' data-dismiss='alert'>&times;</button>" +
+            "<strong>" + header + "</strong>" + text +
+        "</div>";
+        $("#alerts").append(alertElement);
+    },
+
+    clearNotifications: function(){
+        $("#alerts").empty();
+    }
 };

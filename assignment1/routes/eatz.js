@@ -120,8 +120,7 @@ exports.logInOrOff = function(req, res) {
 exports.getDish = function(req, res){
     DishModel.findById(req.params.id, function(err, dish) {
         if (err) {
-            res.send(500, "Sorry, unable to retrieve dish at this time (" 
-                +err.message+ ")" );
+            res.send(500, "Sorry, unable to retrieve dish at this time (" +err.message+ ")" );
         } else if (!dish) {
             res.send(404, "Sorry, that dish doesn't exist; try reselecting from browse view");
         } else {
@@ -144,9 +143,9 @@ exports.uploadImage = function (req, res) {
         if (!err) {
             gm(filePath).resize(240, 180).write(writeStream + "240x180.png", function(err) {  // ADD CODE
                 if (!err) {
-                        console.log("resize success");
-                        res.send(tmpFile);
-                        res.end();
+                    console.log("resize success");
+                    res.send(tmpFile);
+                    res.end();
                 } else {
                 }
             });
