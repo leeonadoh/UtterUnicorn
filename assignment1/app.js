@@ -69,6 +69,7 @@ app.post('/dishes/image', eatz.uploadImage);
 // Routes for user authentication. 
 app.post('/auth', eatz.signup); // User sign up.
 app.get('/auth', eatz.isAuthenticated); // Check if client is authorized.
+app.put('/auth', eatz.logInOrOff);
 
 // Start HTTP server
 http.createServer(app).listen(app.get('port'), function () {

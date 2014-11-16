@@ -3,7 +3,7 @@ var eatz =  eatz || {};
 eatz.UsersCollection = Backbone.Collection.extend({
     model: eatz.UserModel,
 
-    localStorage: new Backbone.LocalStorage('users')
+    url:'/auth',
 });
 
 eatz.Users = new eatz.UsersCollection();

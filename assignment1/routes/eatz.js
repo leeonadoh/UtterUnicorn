@@ -58,7 +58,7 @@ exports.signup = function(req, res) {
                     if (err.err.indexOf("E11000") != -1) {  // duplicate username error
                         res.send(403, "Sorry, username <b>"+user.username+"</b> is already taken");
                     } else {  // any other DB error
-                        res.send(500, "Unable to create account at this time; please try again later " + err.message);
+                        res.send(500, "Unable to create account at this time. Try again later. " + err.message);
                     }
                 }
             });
@@ -75,7 +75,7 @@ exports.isAuthenticated = function(req, res) {
         // Double check by executing search on MongoDB for user id. 
         UserModel.findById(req.session.userid, function(err, result){
             if (err){ // Error.
-                res.send(500, "Unable to find user at this time.\n" + err.message);
+                res.send(500, "We cannot authenticate you at this time. Try again later. " + err.message);
             } else if (res){ // User is found. Client is valid and authorized.
                 res.send({"username": result.username, "userid": result.id, "status": "authorized"});
             } else { // Client must have tampered with cookie. Not authorized.
@@ -85,7 +85,36 @@ exports.isAuthenticated = function(req, res) {
     } else { // Client most likely timed out. Not authorized.
         res.send({"username": "", "userid": "", "status": "unauthorized"});
     }
-}
+};
+
+exports.logInOrOff = function(req, res) {
+    if (req.body.login){ // Is login request.
+        UserModel.findOne({username: req.body.username}, function(qErr, qRes){
+            if (qErr){ // error
+                res.send(500, "Unable to log you in at this time. Try again later. " + err.message);
+            } else if (qRes) { // User found. Validate session if password match.
+                // Use bcrypt to 
+                bcrypt.compare(req.body.password, qRes.password, function(bErr, bRes){
+                    if (bRes){ // Successful login.
+                        req.session.auth = true;
+                        req.session.username = qRes.username;
+                        req.session.userid = qRes.id;
+                        res.send({"username": qRes.username, "userid": qRes.id});
+                    } else { // Password did not match.
+                        res.send("403", "You've entered the wrong password. Try again.");
+                    }
+                });
+            } else { // No such user.
+                res.send("403", "You've entered the wrong user name. Try again.");
+            }
+        });
+    } else { // Is logout request. 
+        req.session.auth = false;
+        delete req.session.username;
+        delete req.session.userid;
+        res.send({"username": "", "userid": ""});
+    }
+};
 
 // retrieve an individual dish model, using it's id as a DB key
 exports.getDish = function(req, res){

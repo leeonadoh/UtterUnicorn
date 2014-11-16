@@ -101,7 +101,7 @@ eatz.NewAccView = Backbone.View.extend({
     saveUser: function(){
         // Check for valid username/email on server here.
         if (!this.validateAll()){
-            return false;
+            return;
         }
         // Fill user model.
         var user = new eatz.UserModel();
@@ -119,15 +119,14 @@ eatz.NewAccView = Backbone.View.extend({
 
     },
 
-    saveUserSuccess: function(res){
-        if (res.error) 
+    saveUserSuccess: function(res){ // TODO notifications
+        if (res.error){ 
             console.log('Signup Failed');
             //eatz.utils.showAlert('Signup Failed', 'Failed to create account', 'alert-error');
-        else {
+        } else {
             console.log('Welcome ' + res.username);
             //eatz.utils.showAlert('Signup Successful!', 'Welcome ' + res.username, 'alert-success');
             // update UI to show username, show/hide logout form
-            console.log(res);
             // Show respective header elements. 
             app.headerView.showAccount(res.username);
             // Redirect to browse view.

@@ -76,5 +76,5 @@ eatz.utils = {
                 app.headerView.showSignIn();
             }
         });
-    }
+    },
 };
