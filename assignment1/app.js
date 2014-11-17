@@ -37,10 +37,10 @@ app.configure(function() {
     }));
 
     // session config
-    //app.use(express.cookieParser()); // populates req.signedCookies
-    //app.use(express.session({key: config.sessionKey,
-        //secret: config.sessionSecret,
-        //cookie: {maxAge:config.sessionTimeout} }));
+    app.use(express.cookieParser()); // populates req.signedCookies
+    app.use(express.session({key: config.sessionKey,
+        secret: config.sessionSecret,
+        cookie: {maxAge:config.sessionTimeout} }));
 
     // Perform route lookup based on URL and HTTP method,
     // Put app.router before express.static so that any explicit

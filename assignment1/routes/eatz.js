@@ -157,7 +157,6 @@ exports.uploadImage = function (req, res) {
                         console.log("resize success");
                         fs.unlinkSync(filePath);
                         res.send(200, tmpFile);
-                        res.end();
                 } else {
                 }
             });
