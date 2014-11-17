@@ -1,3 +1,4 @@
 .*
 assignment1/psd/*
+assignment1/public/img/uploads/*
 !/.gitignore
