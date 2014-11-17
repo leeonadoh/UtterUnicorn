@@ -18,14 +18,15 @@
 }
 
 #dragAndDropContainer{
-    max-width: 300px;
+    max-width: 240px;
+    max-height: 180px;
     margin: 10px auto;
 }
 
 #dragAndDrop:before{
     content: "";
     display: block;
-    padding-top: 100%; 
+    padding-top: 180px; 
 }
 
 #dragAndDrop{
@@ -37,6 +38,9 @@
     -o-background-size: cover;
     background-size: cover;
     background-position: center center;
+
+    max-height: 180px;
+    max-width: 240px;
 
     width: 100%;
     position: relative;

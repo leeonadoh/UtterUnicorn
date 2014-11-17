@@ -6,7 +6,7 @@ module.exports = {
     sessionTimeout: 1000*60*2,  // 2 minute session timeout
     env: 'dev',   // alternative modes: test, production
     dbhost: 'mathlab.utsc.utoronto.ca',
-    dbname: 'gouedwar/eatz',
+    dbname: 'gouedwar/db',
     dbuser: 'gouedwar',
     dbpass: 'gouedwar'
 };

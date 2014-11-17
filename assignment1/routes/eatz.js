@@ -9,7 +9,7 @@ var fs = require('fs'),
     config = require(__dirname + '/../config'),  // port#, other params
     express = require("express"),
     bcrypt = require("bcrypt");
-    
+
 // Connect to database, using credentials specified in your config module
 mongoose.connect("mongodb://" + config.dbuser + ":" + config.dbpass +
             "@" + config.dbhost + "/" + config.dbname);
@@ -222,22 +222,31 @@ exports.editDish = function(req, res){
         dish.venue = req.body.venue;
         dish.info = req.body.info;
         dish.numbr = req.body.numbr;
-        dish.street = req.params.street;
+        dish.street = req.body.street;
         dish.city = req.body.city;
         dish.province = req.body.province;
         dish.url = req.body.url;
-        dish.save(function () {
-            res.send(200, req.body);
+        dish.save(function (err, result) {
+        if (!err){
+            console.log(result.id);
+            res.send(200, result);
+        } else {
+            console.log(err);
+        }
         });
     });
 };
 
 exports.deleteDish = function(req, res){
     DishModel.findById(req.params.id, function(err, dish) {
-        fs.unlinkSync("public/img/uploads/" + dish.image + "360x270.png");
-        fs.unlinkSync("public/img/uploads/" + dish.image + "240x180.png");
-        dish.remove(function () {
-            res.send(200);
-        });
+        if (!err) {
+            if (dish.image != "img/placeholder"){
+                fs.unlinkSync("public/img/uploads/" + dish.image + "360x270.png");
+                fs.unlinkSync("public/img/uploads/" + dish.image + "240x180.png");
+            }
+            dish.remove(function () {
+                res.send(200);
+            });
+        }
     });
 }

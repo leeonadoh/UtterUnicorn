@@ -35,6 +35,9 @@ eatz.utils = {
             cache: false,
             success: function (res) {
                 callback(res);
+            },
+            error: function (res) {
+                console.log("erRRRRRRRRror");
             }
         });
         console.log("saved file");

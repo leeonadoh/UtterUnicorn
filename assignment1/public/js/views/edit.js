@@ -132,7 +132,9 @@ eatz.EditView = Backbone.View.extend({
 
     saveImage: function (img, i) {
         var self = this;
+        console.log("SAVING IMAGE");
         eatz.utils.uploadFile(img, function (res) {
+            console.log("IMAGE SAVED");
             console.log(self);
             self.saveModel(res);
         });
