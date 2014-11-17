@@ -19,6 +19,14 @@ eatz.DishesView = Backbone.View.extend({
         this.listenTo(eatz.Dishes, "add:newDish", function(){
             console.log("browse view listend to new Dish.");
             this.addNew();
+        });        
+        this.listenTo(eatz.Dishes, "sort:name", function(){
+            console.log("event listened: name");
+            this.sortDishes("name");
+        });        
+        this.listenTo(eatz.Dishes, "sort:venue", function(){
+            console.log("event listened: venue");
+            this.sortDishes("venue");
         });
         console.log("browse view ready to listen");
     },
@@ -77,6 +85,13 @@ eatz.DishesView = Backbone.View.extend({
         this.dishViews.forEach(function (dishV){
             dishV.delegateEvents();
         });
+    },
+
+    sortDishes: function (value) {
+        eatz.Dishes.comparator = value;
+        eatz.Dishes.sort();
+        this.render();
+        this.loadCollection();
     }
 
 });

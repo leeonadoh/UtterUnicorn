@@ -8,6 +8,7 @@ eatz.HeaderView = Backbone.View.extend({
         "click #btnLogin": "executeLogin",
         "click #btnLogoff": "executeLogoff",
         "click" : "selectMenuItem",
+        "change input[name=sortRadio]": "changeSort"
     },
 
     initialize: function () {
@@ -206,5 +207,11 @@ eatz.HeaderView = Backbone.View.extend({
                 console.log(err.responseText);
             }
         });
+    },
+
+    changeSort: function () {
+        console.log("sorting");
+        console.log("sort:" + $("input[name=sortRadio]:checked").val());
+        eatz.Dishes.trigger("sort:" + $("input[name=sortRadio]:checked").val());    
     }
 });

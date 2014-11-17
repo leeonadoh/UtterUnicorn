@@ -21,8 +21,24 @@
       </li>
     </ul>
     <ul class="nav pull-right">
-      <li class="navItem"><a href="#about">About</a></li>
-
+      <!-- Dropdown for sort -->
+      <li id="menuLogin" class="dropdown">
+        <a id="loginBtn" data-toggle="dropdown" class="dropdown-toggle" href="#">Sort</a>
+        <ul class="dropdown-menu">
+          <li class="nav-header">Sort Order</li>
+          <li class="divider"></li>
+          <li>
+            <div id="signInDropdown">
+              <label class="radio">
+                <input type="radio" name="sortRadio" id="nameSort" value="name" checked>
+                Name
+              </label>   
+              <label class="radio">             
+                <input type="radio" name="sortRadio" id="venueSort" value="venue">Venue
+              </label>
+            </div>
+          </li>
+        </ul>
       <!-- Dropdown for logging in -->
       <li id="menuLogin" class="dropdown">
         <a id="loginBtn" data-toggle="dropdown" class="dropdown-toggle" href="#">Sign In</a>
@@ -42,7 +58,6 @@
           <li class="divider"></li>
           <li><a href="#signUp" id="btnSignUp">First time here? Sign Up!</a></li>
         </ul>
-        
       </li>
       <!-- Dropdown when logged in -->
       <li id="menuAccount" class="dropdown">
@@ -57,6 +72,7 @@
           <li><a href="#" id="btnLogoff">Log out</a></li>
         </ul>
       </li>
+      <li class="navItem"><a href="#about">About</a></li>
     </ul>
   </div>
 </div>
