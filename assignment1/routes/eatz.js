@@ -102,7 +102,8 @@ exports.logInOrOff = function(req, res) {
     if (req.body.login){ // Is login request.
         UserModel.findOne({username: req.body.username}, function(qErr, qRes){
             if (qErr){ // error
-                res.send(500, "Unable to log you in at this time. Try again later. " + err.message);
+                res.send(500, "Unable to log you in at this time. Try again later.");
+                console.log(qErr.message);
             } else if (qRes) { // User found. Validate session if password match.
                 // Use bcrypt to 
                 bcrypt.compare(req.body.password, qRes.password, function(bErr, bRes){
@@ -112,11 +113,11 @@ exports.logInOrOff = function(req, res) {
                         req.session.userid = qRes.id;
                         res.send({"username": qRes.username, "userid": qRes.id});
                     } else { // Password did not match.
-                        res.send("403", "You've entered the wrong password. Try again.");
+                        res.send("403", "You've entered the wrong password - try again!");
                     }
                 });
             } else { // No such user.
-                res.send("403", "You've entered the wrong user name. Try again.");
+                res.send("403", "Your user name doesn't exist - sign up!");
             }
         });
     } else { // Is logout request. 
@@ -150,13 +151,21 @@ exports.uploadImage = function (req, res) {
         writeStream = __dirname.substring(0, __dirname.indexOf("routes")) + imageURL;   // ADD CODE
         console.log(writeStream);
     // process EditView image
-    gm(filePath).resize(360, 270).write(writeStream + "360x270.png", function(err) {  // ADD CODE
+    gm(filePath)
+    .resize('360', '270', '^')
+    .gravity('Center')
+    .crop('360', '270')
+    .write(writeStream + "360x270.png", function(err) {  // ADD CODE
         if (!err) {
-            gm(filePath).resize(240, 180).write(writeStream + "240x180.png", function(err) {  // ADD CODE
+            gm(filePath)
+            .resize('240', '180', '^')
+            .gravity('Center')
+            .crop('240', '180')
+            .write(writeStream + "240x180.png", function(err) {  // ADD CODE
                 if (!err) {
-                        console.log("resize success");
-                        fs.unlinkSync(filePath);
-                        res.send(200, tmpFile);
+                    console.log("resize success");
+                    fs.unlinkSync(filePath);
+                    res.send(200, tmpFile);
                 } else {
                 }
             });

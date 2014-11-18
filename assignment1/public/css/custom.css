@@ -72,11 +72,6 @@ body.homeBackground {
 	 background-repeat: no-repeat;
 }
 
-#loginFailed {
-    display: none;
-    color: #b94a48;
-}
-
 #menuAccount {
     /*display: none;*/
 }

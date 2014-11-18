@@ -18,7 +18,7 @@ eatz.DishesView = Backbone.View.extend({
         //Listen to the Dishes collection for adding models
         this.listenTo(eatz.Dishes, "add:newDish", function(){
             console.log("browse view listend to new Dish.");
-            this.addNew();
+            this.sortDishes("name");
         });        
         this.listenTo(eatz.Dishes, "sort:name", function(){
             console.log("event listened: name");
@@ -35,19 +35,6 @@ eatz.DishesView = Backbone.View.extend({
         this.$el.html(this.template());  // create DOM content for DishesView
         this.delegateEvents();
         return this;    // support chaining
-    },
-
-    //Add the DishView of the latest Dish in the Dishes collection to the DishesView
-    addNew: function () {
-        var view = new eatz.DishView({
-            model: eatz.Dishes.at(eatz.Dishes.length - 1)
-        });
-        this.dishViews.push(view);
-        console.log(view.model.id);
-        console.log("adding");
-        this.$("#dish-list").append(view.render().el);
-        console.log("success");
-        console.log(view.model.id);
     },
 
     //Add DishView of dish to the DishesView
