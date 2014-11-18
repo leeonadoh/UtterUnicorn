@@ -152,7 +152,6 @@ eatz.EditView = Backbone.View.extend({
             eatz.Dishes.get(this.did).save(null, {
                 wait: true,
                 success: function (model, res) {
-                    //eatz.Dishes.trigger("add:newDish");
                     document.location.href = "#dishes"; //Redirect page to the DishesView
                     eatz.utils.showNotification("alert-success", "Ok.", "You've modified your dish.");
                     self.selectBrowseDishes(); //Put active class in the DishesView header button
@@ -174,14 +173,13 @@ eatz.EditView = Backbone.View.extend({
             dish.save(null, {
                 wait: true,
                 success: function (model, res) {
-                    //eatz.Dishes.trigger("add:newDish");
-                    model.set("_id", res._id);
                     document.location.href = "#dishes"; //Redirect page to the DishesView
                     eatz.utils.showNotification("alert-success", "Ok.", "You've added a new dish.");
                     self.selectBrowseDishes(); //Put active class in the DishesView header button
                     self.resetForms(); //Clear the input fields
                 },
                 error: function(model, err) {
+                    eatz.Dishes.remove(dish) // Remove instance from collection if failed.
                     eatz.utils.showNotification("alert-error", "Uh-Oh!", err.responseText);
                     eatz.utils.checkAuth();
                 }
