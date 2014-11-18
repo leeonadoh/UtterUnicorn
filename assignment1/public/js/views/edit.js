@@ -130,7 +130,7 @@ eatz.EditView = Backbone.View.extend({
         return this;    // support chaining
     },
 
-    saveImage: function (img, i) {
+    saveImage: function (img) {
         var self = this;
         console.log("SAVING IMAGE");
         eatz.utils.uploadFile(img, function (res) {
@@ -141,6 +141,8 @@ eatz.EditView = Backbone.View.extend({
     },
 
     saveModel: function (res){
+        var self = this;
+        eatz.utils.clearNotifications();
         if (this.did != ""){ //Editing a dish
             console.log("valid edit");
             eatz.Dishes.get(this.did).set(this.newAttributes());
@@ -148,13 +150,17 @@ eatz.EditView = Backbone.View.extend({
                 eatz.Dishes.get(this.did).set("image", res);
             }
             eatz.Dishes.get(this.did).save(null, {
+                wait: true,
                 success: function () {
+                    eatz.Dishes.trigger("add:newDish");
                     document.location.href = "#dishes"; //Redirect page to the DishesView
+                    eatz.utils.showNotification("alert-success", "Ok.", "You've modified your dish.");
+                    self.selectBrowseDishes(); //Put active class in the DishesView header button
+                    self.resetForms(); //Clear the input fields
                 },
-                error: function () {
-                    eatz.utils.showNotification("alert-error", "Error ", "Sorry, dish " + dish.get("name") + 
-                        " at " + dish.get("venue") + " is already in the Eatz database.");
-                    document.location.href = "#dishes"; //Redirect page to the DishesView
+                error: function(model, err) {
+                    eatz.utils.showNotification("alert-error", "Uh-Oh!", err.responseText);
+                    eatz.utils.checkAuth();
                 }
             });
         } else { //Adding a dish
@@ -166,22 +172,23 @@ eatz.EditView = Backbone.View.extend({
             }
             eatz.Dishes.add(dish);
             dish.save(null, {
+                wait: true,
                 success: function () {
                     eatz.Dishes.trigger("add:newDish");
                     document.location.href = "#dishes"; //Redirect page to the DishesView
+                    eatz.utils.showNotification("alert-success", "Ok.", "You've added a new dish.");
+                    self.selectBrowseDishes(); //Put active class in the DishesView header button
+                    self.resetForms(); //Clear the input fields
                 },
-                error: function () {
-                    eatz.utils.showNotification("alert-error", "Error ", "Sorry, dish " + dish.get("name") + 
-                        " at " + dish.get("venue") + " is already in the Eatz database.");
-                    document.location.href = "#dishes"; //Redirect page to the DishesView
+                error: function(model, err) {
+                    eatz.utils.showNotification("alert-error", "Uh-Oh!", err.responseText);
+                    eatz.utils.checkAuth();
                 }
             });
         }
 
         //eatz.Dishes.create(this.newAttributes());
         //this.addOne(dish);
-        this.selectBrowseDishes(); //Put active class in the DishesView header button
-        this.resetForms(); //Clear the input fields
     },
 
     //Save the changes to the current Dish or add a new Dish if it doesnt exist yet (ie did == "")
@@ -200,10 +207,23 @@ eatz.EditView = Backbone.View.extend({
 
     //Remove a dish from the collection and remove it's view
     delete: function () {
-        this.selectBrowseDishes(); //Put active class in the DishesView header button
-        this.deleteDish(this.did); //Destroy dish model
-        this.resetForms(); //Clear the input fields
-        document.location.href = "#dishes"; //Redirect page to the DishesView
+        var self = this;
+        console.log(eatz.Dishes.get(this.did));
+        console.log(this.did);
+        eatz.utils.clearNotifications();
+        eatz.Dishes.get(this.did).destroy({
+            wait: true,
+            success: function(){
+                self.selectBrowseDishes(); //Put active class in the DishesView header button
+                self.resetForms(); //Clear the input fields
+                document.location.href = "#dishes"; //Redirect page to the DishesView
+                eatz.utils.showNotification("alert-success", "Ok.", "You've deleted your dish.");
+            },
+            error: function(model, err){
+                eatz.utils.showNotification("alert-error", "Uh-Oh!", err.responseText);
+                eatz.utils.checkAuth();
+            }
+        });
     },
 
     //Collects values from fields and packs them into an object
@@ -268,13 +288,6 @@ eatz.EditView = Backbone.View.extend({
         this.$province.val().trim() &&
         this.$webSiteUrl.val().trim();
     },*/
-
-    //Destroy the dish model
-    deleteDish: function(dishid){
-        console.log(eatz.Dishes.get(dishid));
-        console.log(this.did);
-        eatz.Dishes.get(dishid).destroy();
-    },
 
     //Turns on the add mode (ie hide delete button and set did = "")
     addMode: function() {

@@ -24,11 +24,11 @@ var DishScheme = new mongoose.Schema({
     street: { type: String, required: true },
     city: { type: String, required: true },
     province: { type: String, required: true },
-    url: { type: String, required: false }
-    // ADD CODE for other Dish attributes
+    website: { type: String, required: false },
+    uid: { type: String, required: true},
 });
 
-var User = new mongoose.Schema({
+var UserScheme = new mongoose.Schema({
     username: {type: String, required: true, unique: true},
     password: {type: String, required: true},
     email: {type: String, required: true}
@@ -39,7 +39,7 @@ DishScheme.index({"name": 1, "venue": 1}, { unique: true});  // ADD CODE
 
 // Models
 var DishModel = mongoose.model('Dish', DishScheme);
-var UserModel = mongoose.model("User", User);
+var UserModel = mongoose.model("User", UserScheme);
 
 // "exports" is used to make the associated name visible
 // to modules that "require" this file (in particular app.js)
@@ -67,9 +67,9 @@ exports.signup = function(req, res) {
                 } else {  // save failed
                     // could alternatively detect duplicate username using find()
                     if (err.err.indexOf("E11000") != -1) {  // duplicate username error
-                        res.send(403, "Sorry, username <b>"+user.username+"</b> is already taken");
+                        res.send(403, "Username <b>"+user.username+"</b> is already taken - try another one.");
                     } else {  // any other DB error
-                        res.send(500, "Unable to create account at this time. Try again later. " + err.message);
+                        res.send(500, "We couldn't create your account - try again later." + err.message);
                     }
                 }
             });
@@ -111,6 +111,9 @@ exports.logInOrOff = function(req, res) {
                         req.session.auth = true;
                         req.session.username = qRes.username;
                         req.session.userid = qRes.id;
+                        if (req.body.extendSession){ // Remember me is ticked.
+                            req.session.cookie.maxAge = 1000*60*10;
+                        }
                         res.send({"username": qRes.username, "userid": qRes.id});
                     } else { // Password did not match.
                         res.send("403", "You've entered the wrong password - try again!");
@@ -126,19 +129,6 @@ exports.logInOrOff = function(req, res) {
         delete req.session.userid;
         res.send({"username": "", "userid": ""});
     }
-};
-
-// retrieve an individual dish model, using it's id as a DB key
-exports.getDish = function(req, res){
-    DishModel.findById(req.params.id, function(err, dish) {
-        if (err) {
-            res.send(500, "Sorry, unable to retrieve dish at this time (" +err.message+ ")" );
-        } else if (!dish) {
-            res.send(404, "Sorry, that dish doesn't exist; try reselecting from browse view");
-        } else {
-            res.send(200, dish);
-        }
-    });
 };
 
 exports.uploadImage = function (req, res) {
@@ -178,8 +168,7 @@ exports.uploadImage = function (req, res) {
 exports.getDish = function(req, res){
     DishModel.findById(req.params.id, function(err, dish) {
         if (err) {
-            res.send(500, "Sorry, unable to retrieve dish at this time ("
-                +err.message+ ")" );
+            res.send(500, "Sorry, unable to retrieve dish at this time (" +err.message+ ")" );
         } else if (!dish) {
             res.send(404, "Sorry, that dish doesn't exist; try reselecting from browse view");
         } else {
@@ -202,60 +191,106 @@ exports.getDishes = function(req, res){
 };
 
 exports.addDish = function(req, res){
-    var dish = new DishModel();
-    dish.image = req.body.image;
-    dish.name = req.body.name;
-    dish.venue = req.body.venue;
-    dish.info = req.body.info;
-    dish.numbr = req.body.numbr;
-    dish.street = req.body.street;
-    dish.city = req.body.city;
-    dish.province = req.body.province;
-    dish.url = req.body.url;
-    console.log(req.body)
-    dish.save(function (err, result) {
-        if (!err){
-            console.log(result.id);
-            res.send(200, result);
-        } else {
-            console.log(err);
-            res.send(500);
-        }
-    });
+    console.log(req.body);
+    if (!req.session.userid){
+        res.send(403, "You don't seem to be logged in - sign in, or register!");
+    } else {
+        UserModel.findById(req.session.userid, function(err, result){
+            if (err){ // Error.
+                console.log(err);
+                res.send(500, "We cannot authenticate you at this time- try again later.");
+            } else if (res){ // User is found. Client is valid and authorized.
+                var dish = new DishModel();
+                dish.image = req.body.image;
+                dish.name = req.body.name;
+                dish.venue = req.body.venue;
+                dish.info = req.body.info;
+                dish.numbr = req.body.numbr;
+                dish.street = req.body.street;
+                dish.city = req.body.city;
+                dish.province = req.body.province;
+                dish.website = req.body.website;
+                dish.uid = req.session.userid;
+                dish.save(function (err, result) {
+                    if (!err){
+                        console.log(result.id);
+                        res.send(200, result);
+                    } else {
+                        console.log(err);
+                        res.send(500, "We couldn't save your dish - try again later.");
+                    }
+                });
+            } else { // Client must have tampered with cookie. Not authorized.
+                res.send(403, "We don't recognize you " + req.session.username + ". Did you register?");
+            }
+        });
+    }
 };
 
 exports.editDish = function(req, res){
-    DishModel.findById(req.params.id, function(err, dish) {
-        dish.image = req.body.image;
-        dish.name = req.body.name;
-        dish.venue = req.body.venue;
-        dish.info = req.body.info;
-        dish.numbr = req.body.numbr;
-        dish.street = req.body.street;
-        dish.city = req.body.city;
-        dish.province = req.body.province;
-        dish.url = req.body.url;
-        dish.save(function (err, result) {
-        if (!err){
-            console.log(result.id);
-            res.send(200, result);
-        } else {
-            console.log(err);
-        }
+    if (!req.session.userid){
+        res.send(403, "You don't seem to be logged in - sign in, or register!");
+    } else { // User is logged in. Have to check if user can edit this dish.
+        DishModel.findById(req.params.id, function(err, dish){
+            if (err){ // Error occured.
+                res.send(500, "We couldn't edit your dish at this time - try again later.");
+            } else if (!dish){ // Dish couldn't be found.
+                res.send(404, "Your dish cannot be found - try refreshing your browser.");
+            } else {
+                if (dish.uid === req.session.userid){ // User is creator of this dish.
+                    dish.image = req.body.image;
+                    dish.name = req.body.name;
+                    dish.venue = req.body.venue;
+                    dish.info = req.body.info;
+                    dish.numbr = req.body.numbr;
+                    dish.street = req.body.street;
+                    dish.city = req.body.city;
+                    dish.province = req.body.province;
+                    dish.website = req.body.website;
+                    dish.save(function (saveError, saveResult){
+                        if (!saveError){
+                            console.log(saveResult.id);
+                            res.send(200, saveResult);
+                        } else {
+                            console.log(saveError);
+                            res.send(500, "We couldn't save your dish at this time - try again later.");
+                        }
+                    });
+                } else { // User not authorized to edit dish.
+                    res.send(403, "You didn't submit this dish - try editing dishes you've posted!");
+                }
+            }
         });
-    });
+    }
 };
 
 exports.deleteDish = function(req, res){
-    DishModel.findById(req.params.id, function(err, dish) {
-        if (!err) {
-            if (dish.image != "img/placeholder"){
-                fs.unlinkSync("public/img/uploads/" + dish.image + "360x270.png");
-                fs.unlinkSync("public/img/uploads/" + dish.image + "240x180.png");
+    if (!req.session.userid){
+        res.send(403, "You don't seem to be logged in - sign in, or register!");
+    } else { // User is logged in. Have to check if user can delete this dish.
+        DishModel.findById(req.params.id, function(err, dish) {
+            if (err){
+                res.send(500, "We couldn't remove your dish at this time - try again later.");
+            } else if (!dish) { // Dish to remove isn't found.
+                res.send(404, "Your dish cannot be found - try refreshing your browser.");
+            } else { // Dish to remove found.
+                if (dish.uid === req.session.userid){ // User authorized to delete dish.
+                    if (dish.image != "img/placeholder"){
+                        fs.unlinkSync("public/img/uploads/" + dish.image + "360x270.png");
+                        fs.unlinkSync("public/img/uploads/" + dish.image + "240x180.png");
+                    }
+                    dish.remove(function(removeErr, removeRes) {
+                        if (!removeError){
+                            res.send(200);
+                        } else {
+                            console.log(removeErr);
+                            res.send(500, "We couldn't remove your dish at this time - try again later.");
+                        }
+                    });
+                } else { // User is not authorized.
+                    res.send(403, "You didn't submit this dish - try deleting dishes you've posted!");
+                }
             }
-            dish.remove(function () {
-                res.send(200);
-            });
-        }
-    });
+        });
+    }
 }
