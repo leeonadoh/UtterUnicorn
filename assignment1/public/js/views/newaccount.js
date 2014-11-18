@@ -103,6 +103,7 @@ eatz.NewAccView = Backbone.View.extend({
         if (!this.validateAll()){
             return;
         }
+        eatz.utils.clearNotifications();
         // Fill user model.
         var user = new eatz.UserModel();
         user.set(this.fetchAttr());
@@ -119,13 +120,12 @@ eatz.NewAccView = Backbone.View.extend({
 
     },
 
-    saveUserSuccess: function(res){ // TODO notifications
+    saveUserSuccess: function(res){
         if (res.error){ 
-            console.log('Signup Failed');
+            eatz.utils.showNotification("alert-error", "Uh-Oh!", " We couldn't create your account - try again later.");
             //eatz.utils.showAlert('Signup Failed', 'Failed to create account', 'alert-error');
         } else {
-            console.log('Welcome ' + res.username);
-            //eatz.utils.showAlert('Signup Successful!', 'Welcome ' + res.username, 'alert-success');
+            eatz.utils.showNotification("alert-success","You've Signed Up!", "Welcome to MyEatz " + res.username + ".");
             // update UI to show username, show/hide logout form
             // Show respective header elements. 
             app.headerView.showAccount(res.username);
@@ -137,6 +137,6 @@ eatz.NewAccView = Backbone.View.extend({
     },
 
     saveUserError: function(err){
-        console.log(err.responseText);
+        eatz.utils.showNotification("alert-error", "Uh-Oh!", err.responseText);
     },
 });

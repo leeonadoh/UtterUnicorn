@@ -59,8 +59,8 @@ eatz.utils = {
 
     // Check whether we are currently authenticated as a user. 
     // Execute the necessary actions to show that we are logged in or off.
-    checkAuth: function(succ, err){
-        if (!succ && !err){
+    checkAuth: function(succ){
+        if (!succ){
             console.log("Checking authentication")
             $.ajax({
                 url: '/auth',
@@ -80,20 +80,25 @@ eatz.utils = {
                     app.headerView.showSignIn();
                 }
             });
+        } else {
+            $.ajax({
+                url: '/auth',
+                type: 'GET',
+                success: succ, 
+                error: function(err) {
+                    console.log("Auth check failed.");
+                    console.log(err);
+                    app.headerView.showSignIn();
+                },
+            });
         }
-        $.ajax({
-            url: '/auth',
-            type: 'GET',
-            success: succ, 
-            error: err
-        });
     },
 
     showNotification: function(type, header, text){
         var alertElement = 
         "<div class='alert " + type + "'>" + 
             "<button type='button' class='close' data-dismiss='alert'>&times;</button>" +
-            "<strong>" + header + "</strong>" + text +
+            "<strong>" + header + "</strong> " + text +
         "</div>";
         $("#alerts").append(alertElement);
     },

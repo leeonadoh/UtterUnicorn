@@ -19,6 +19,7 @@ eatz.HeaderView = Backbone.View.extend({
 
         this.$username = this.$("#username");
         this.$password = this.$("#password");
+        this.$extendSession = this.$("#longSession");
     },
 
     render: function () {
@@ -68,6 +69,7 @@ eatz.HeaderView = Backbone.View.extend({
             username: this.$username.val().trim(),
             password: this.$password.val(),
             login: isLogIn && true,
+            extendSession: this.$extendSession.is(":checked"),
         };
     },
 
@@ -95,7 +97,8 @@ eatz.HeaderView = Backbone.View.extend({
                     app.headerView.showAccount(res.username);
                     app.headerView.$signInMenu.removeClass("open");
                     app.headerView.deactivateMenuItems();
-                    document.location.href = "#";
+                    app.headerView.$("#browse").parent().addClass("active");
+                    document.location.href = "#dishes";
                 }
             },
             error: function(err){
