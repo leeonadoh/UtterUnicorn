@@ -216,8 +216,12 @@ exports.addDish = function(req, res){
                         console.log(result.id);
                         res.send(200, result);
                     } else {
-                        console.log(err);
-                        res.send(500, "We couldn't save your dish - try again later.");
+                        if (err.err.indexOf("E11000") != -1) {  // duplicate dish error
+                            res.send(500, "The dish and venue you've specified already exists!")
+                        } else {
+                            console.log(err);
+                            res.send(500, "We couldn't save your dish - try again later.");
+                        }
                     }
                 });
             } else { // Client must have tampered with cookie. Not authorized.
