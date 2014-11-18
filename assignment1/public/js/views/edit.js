@@ -179,7 +179,7 @@ eatz.EditView = Backbone.View.extend({
                     self.resetForms(); //Clear the input fields
                 },
                 error: function(model, err) {
-                    eatz.Dishes.remove(dish) // Remove instance from collection if failed.
+                    eatz.Dishes.remove(model); // Delete the model instance if failed to sync.
                     eatz.utils.showNotification("alert-error", "Uh-Oh!", err.responseText);
                     eatz.utils.checkAuth();
                 }
@@ -228,14 +228,14 @@ eatz.EditView = Backbone.View.extend({
     //Collects values from fields and packs them into an object
     newAttributes: function() {
         return {
-            name: this.$dishName.val().trim(),
-            venue: this.$serverName.val().trim(),
-            info: this.$info.val().trim(),
-            numbr: this.$addressNumber.val().trim(),
-            street: this.$addressStreet.val().trim(),
-            city: this.$addressCity.val().trim(),
-            province: this.$province.val().trim(),
-            website: this.$webSiteUrl.val().trim()
+            name: _.escape(this.$dishName.val().trim()),
+            venue: _.escape(this.$serverName.val().trim()),
+            info: _.escape(this.$info.val().trim()),
+            numbr: _.escape(this.$addressNumber.val().trim()),
+            street: _.escape(this.$addressStreet.val().trim()),
+            city: _.escape(this.$addressCity.val().trim()),
+            province: _.escape(this.$province.val().trim()),
+            website: _.escape(this.$webSiteUrl.val().trim())
         };
     },
 

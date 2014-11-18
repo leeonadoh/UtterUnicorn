@@ -66,8 +66,8 @@ eatz.HeaderView = Backbone.View.extend({
 
     fetchCridentials: function(isLogIn){
         return {
-            username: this.$username.val().trim(),
-            password: this.$password.val(),
+            username: _.escape(this.$username.val().trim()),
+            password: _.escape(this.$password.val()),
             login: isLogIn && true,
             extendSession: this.$extendSession.is(":checked"),
         };

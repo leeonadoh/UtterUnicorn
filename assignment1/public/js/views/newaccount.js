@@ -90,9 +90,9 @@ eatz.NewAccView = Backbone.View.extend({
 
     fetchAttr: function(){
         return {
-            username: this.$userName.val().trim(),
-            email: this.$email.val().trim(),
-            password: this.$password.val(), // Allow whitespace?
+            username: _.escape(this.$userName.val().trim()),
+            email: _.escape(this.$email.val().trim()),
+            password: _.escape(this.$password.val()), // Allow whitespace?
         };
     },
 

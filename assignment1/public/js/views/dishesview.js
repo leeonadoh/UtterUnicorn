@@ -11,22 +11,23 @@ eatz.DishesView = Backbone.View.extend({
     },
 
     initialize: function () {
+        var self = this;
         //this.listenTo(eatz.Dishes, 'all', this.fill());
         //this.listenTo(eatz.Dishes, 'all', this.render());
         this.render();
         this.loadCollection();
         //Listen to the Dishes collection for adding models
         this.listenTo(eatz.Dishes, "sync", function(){
-            console.log("browse view listend to sync.");
-            this.sortDishes("name");
+            console.log("browse view listend to add dish.");
+            self.sortDishes("name");
         });        
         this.listenTo(eatz.Dishes, "sort:name", function(){
             console.log("event listened: name");
-            this.sortDishes("name");
+            self.sortDishes("name");
         });        
         this.listenTo(eatz.Dishes, "sort:venue", function(){
             console.log("event listened: venue");
-            this.sortDishes("venue");
+            self.sortDishes("venue");
         });
         console.log("browse view ready to listen");
     },
@@ -42,6 +43,7 @@ eatz.DishesView = Backbone.View.extend({
         var view = new eatz.DishView({
             model: dish
         });
+        //console.log(dish);
         this.dishViews.push(view);
         this.$("#dish-list").append(view.render().el);
         console.log("success");
