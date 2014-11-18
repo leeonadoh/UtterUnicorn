@@ -150,6 +150,11 @@ eatz.EditView = Backbone.View.extend({
             eatz.Dishes.get(this.did).save(null, {
                 success: function () {
                     document.location.href = "#dishes"; //Redirect page to the DishesView
+                },
+                error: function () {
+                    eatz.utils.showNotification("alert-error", "Error ", "Sorry, dish " + dish.get("name") + 
+                        " at " + dish.get("venue") + " is already in the Eatz database.");
+                    document.location.href = "#dishes"; //Redirect page to the DishesView
                 }
             });
         } else { //Adding a dish
@@ -164,6 +169,11 @@ eatz.EditView = Backbone.View.extend({
                 success: function () {
                     eatz.Dishes.trigger("add:newDish");
                     document.location.href = "#dishes"; //Redirect page to the DishesView
+                },
+                error: function () {
+                    eatz.utils.showNotification("alert-error", "Error ", "Sorry, dish " + dish.get("name") + 
+                        " at " + dish.get("venue") + " is already in the Eatz database.");
+                    document.location.href = "#dishes"; //Redirect page to the DishesView
                 }
             });
         }
@@ -177,6 +187,7 @@ eatz.EditView = Backbone.View.extend({
     //Save the changes to the current Dish or add a new Dish if it doesnt exist yet (ie did == "")
     save: function () {
         this.clearErrors();
+        eatz.utils.clearNotifications();
         if (this.validate()) { //Check if fields are valid first
             console.log("valid input");
             if (!$.isEmptyObject(this.image)) {

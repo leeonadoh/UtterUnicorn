@@ -35,7 +35,7 @@ var User = new mongoose.Schema({
 });
 
 // each name:venue pair must be unique; duplicates are dropped
-//Dish.index(...);  // ADD CODE
+DishScheme.index({"name": 1, "venue": 1}, { unique: true});  // ADD CODE
 
 // Models
 var DishModel = mongoose.model('Dish', DishScheme);
@@ -219,6 +219,7 @@ exports.addDish = function(req, res){
             res.send(200, result);
         } else {
             console.log(err);
+            res.send(500);
         }
     });
 };
