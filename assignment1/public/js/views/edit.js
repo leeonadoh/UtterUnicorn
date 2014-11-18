@@ -194,6 +194,7 @@ eatz.EditView = Backbone.View.extend({
     //Save the changes to the current Dish or add a new Dish if it doesnt exist yet (ie did == "")
     save: function () {
         this.clearErrors();
+        eatz.utils.clearNotifications();
         if (this.validate()) { //Check if fields are valid first
             console.log("valid input");
             if (!$.isEmptyObject(this.image)) {
