@@ -16,8 +16,8 @@ eatz.DishesView = Backbone.View.extend({
         this.render();
         this.loadCollection();
         //Listen to the Dishes collection for adding models
-        this.listenTo(eatz.Dishes, "add:newDish", function(){
-            console.log("browse view listend to new Dish.");
+        this.listenTo(eatz.Dishes, "sync", function(){
+            console.log("browse view listend to sync.");
             this.sortDishes("name");
         });        
         this.listenTo(eatz.Dishes, "sort:name", function(){

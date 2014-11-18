@@ -284,8 +284,8 @@ exports.deleteDish = function(req, res){
                         fs.unlinkSync("public/img/uploads/" + dish.image + "240x180.png");
                     }
                     dish.remove(function(removeErr, removeRes) {
-                        if (!removeError){
-                            res.send(200);
+                        if (!removeErr){
+                            res.send(200, removeRes);
                         } else {
                             console.log(removeErr);
                             res.send(500, "We couldn't remove your dish at this time - try again later.");
