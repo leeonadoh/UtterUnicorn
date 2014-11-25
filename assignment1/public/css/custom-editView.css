@@ -20,7 +20,7 @@
 #dragAndDropContainer{
     max-width: 240px;
     max-height: 180px;
-    margin: 10px auto;
+    margin: 20px auto;
 }
 
 #dragAndDrop:before{
@@ -75,4 +75,13 @@
 
 .dndTopPadText {
     margin-top: 10px;
+}
+
+#mapContent {
+    height: 240px;
+    max-width: 300px;
+    display:block;
+    border-radius: 5px;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.25);
+    margin: 20px auto;
 }

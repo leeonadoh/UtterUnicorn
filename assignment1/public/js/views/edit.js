@@ -7,6 +7,7 @@ eatz.EditView = Backbone.View.extend({
     //If the current Dish is not yet created (ie adding) then did is ""
     did: "",
     fileReaderSupported: true,
+    geolocationSupported: true,
     image: {},
     imageName: "",
 
@@ -14,6 +15,7 @@ eatz.EditView = Backbone.View.extend({
     events: {
         "click #save": "save",
         "click #delete": "delete",
+        "click #useGeolocation": "getCurrentPosition",
 
         "dragenter #dragAndDrop": "onDragEnter",
         "dragleave #dragAndDrop": "onDragLeave",
@@ -40,6 +42,8 @@ eatz.EditView = Backbone.View.extend({
         this.$dropStatus = this.$("#statusText");
         this.$hiddenBrowseBtn = this.$("#hiddenBrowse");
         this.$browseBtn = this.$("#browseBtn");
+        this.$geoLocBtn = this.$("#useGeolocation");
+        this.$googleMap = this.$("#googleMapContainer");
 
         // Check for presence of FileReader for comparability.
         // Disable live preview + drag and dropping of files if not present.
@@ -49,6 +53,12 @@ eatz.EditView = Backbone.View.extend({
             this.$dropStatus.addClass("errorColor");
             this.$dropArea.addClass("notSupported");
             this.fileReaderSupported = false;
+        }
+        // Hide geolocation button if not offered by browser.
+        if (!navigator.geolocation){
+            this.$geoLocBtn.addClass("disabled");
+            eatz.utils.showNotification("", "Aw shucks.", "Your browser doesn't support geolocation - try using the latest version of chrome or firefox!");
+            this.geolocationSupported = false;
         }
     },
 
@@ -296,6 +306,7 @@ eatz.EditView = Backbone.View.extend({
         }
         this.did = "";
         this.liveValidate();
+        this.setMap();
     },
 
     //Turns on the edit mode (ie shows the delete button and 
@@ -309,14 +320,47 @@ eatz.EditView = Backbone.View.extend({
         this.clearErrors();
         this.liveValidate();
         this.setImage();
+        this.setMap(); // Set long and lat values for 2.2
+    },
+
+    setMap: function(lat, lng){
+        if (this.mapView){
+            this.mapView.setCenter(lat, lng);
+            this.mapView.resize();
+        } else {
+            this.mapView = new eatz.MapView({
+                model: new eatz.MapModel({lat:lat, lon:lng}),
+            });
+        }
+        this.$googleMap.html(this.mapView.el);
+    },
+
+    getCurrentPosition: function(){
+        if(this.geolocationSupported){
+            var self = this;
+            navigator.geolocation.getCurrentPosition(
+                function(pos){
+                    self.setMap(pos.coords.latitude, pos.coords.longitude);
+                    console.log("Set position " + pos.coords.latitude + ", " + pos.coords.longitude);
+                },
+                function(){
+                    eatz.utils.showNotification("alert-error", "Uh-Oh!", "We weren't able to capture your location - did you grant us permission to do so? ");
+                },
+                {
+                    enableHighAccuracy: true, 
+                    timeout: 10000, 
+                    maximumAge: 0 
+                }
+            );
+        }
     },
     
     setImage: function() {
-		  if (eatz.Dishes.get(this.did).get("image") != ("img/placeholder")) {
-		  		this.$("#dragAndDrop").css("background-image", "url(\"../img/uploads/" + eatz.Dishes.get(this.did).get("image") + "240x180.png\")");
-        		this.$("#dragAndDrop").css("background-repeat", "no-repeat"); 
-        		this.$("#dragAndDrop").css("background-position", "center" );
-		  }    
+        if (eatz.Dishes.get(this.did).get("image") != ("img/placeholder")) {
+            this.$("#dragAndDrop").css("background-image", "url(\"../img/uploads/" + eatz.Dishes.get(this.did).get("image") + "240x180.png\")");
+            this.$("#dragAndDrop").css("background-repeat", "no-repeat"); 
+            this.$("#dragAndDrop").css("background-position", "center" );
+        }    
     },
 
     //Checks that all values in the input fields are valid

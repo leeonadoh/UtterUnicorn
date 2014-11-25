@@ -1,7 +1,9 @@
-<h1>Dish Details</h1>
-<br>
 <div class="row">
     <div class="span7">
+        <div class="row">
+            <h1>Dish Details</h1>
+            <br>
+        </div>
         <div class="row">
             <div class="span2" align="right">Dish</div>
             <div class="span5 control-group" id="dishNameForm">
@@ -37,7 +39,10 @@
             <div id="streetErrorPrompt" class="span2 errorPrompt errorColor" >Invalid Street #/Name</div>
         </div>
         <div class="row">
-            <div class="span2 offset2 control-group address" id="cityForm">
+            <div class="span2" align="right">
+                <a class="btn" id="useGeolocation">Use my location</a>
+            </div>
+            <div class="span2 control-group address" id="cityForm">
                 <input type="text" id="addressCity" class="span2" placeholder="Toronto">
             </div>
             <div class="span1 control-group address" id="provinceForm">
@@ -50,14 +55,18 @@
         <a class="btn btn-large" id="delete">Delete</a>
     </div>
     <div class="span4">
-        <div id="dragAndDropContainer" align="center">
-            <div id="dragAndDrop"></div>
+        <div class="row">
+            <div id="dragAndDropContainer">
+                <div id="dragAndDrop"></div>
+            </div>
+            <div align="center">
+                <div id="statusText" class="dndTopPadText"></div>
+                <div class="dndTopPadText">Drag and drop a picture to the area above.</div>
+                <a id="browseBtn" class="btn">Or click here to snap or browse for one</a>
+                <input id="hiddenBrowse" type="file" accept="image/*" capture="camera" style="display:none;"></input>
+            </div>
         </div>
-        <div align="center">
-            <div id="statusText" class="dndTopPadText"></div>
-            <div class="dndTopPadText">Drag and drop a picture to the area above.</div>
-            <a id="browseBtn" class="btn">Or click here to snap or browse for one</a>
-            <input id="hiddenBrowse" type="file" accept="image/*" capture="camera" style="display:none;"></input>
+        <div class="row" id="googleMapContainer">
         </div>
     </div>
 </div>

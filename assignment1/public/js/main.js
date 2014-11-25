@@ -83,7 +83,7 @@ eatz.AppRouter = Backbone.Router.extend({
 
 });
 
-eatz.utils.loadTemplates(['HomeView', 'HeaderView', 'AboutView', 'EditView', 'DishesView', 'DishView', "NewAccView"], function() {
+eatz.utils.loadTemplates(['HomeView', 'HeaderView', 'AboutView', 'EditView', 'DishesView', 'DishView', "NewAccView", "MapView"], function() {
     app = new eatz.AppRouter();
     eatz.Dishes.fetch({
         success: function(){
