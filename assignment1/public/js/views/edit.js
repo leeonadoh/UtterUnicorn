@@ -342,6 +342,7 @@ eatz.EditView = Backbone.View.extend({
                 function(pos){
                     self.setMap(pos.coords.latitude, pos.coords.longitude);
                     console.log("Set position " + pos.coords.latitude + ", " + pos.coords.longitude);
+                    self.geoAddressField(pos.coords.latitude, pos.coords.longitude);
                 },
                 function(){
                     eatz.utils.showNotification("alert-error", "Uh-Oh!", "We weren't able to capture your location - did you grant us permission to do so? ");
@@ -353,6 +354,27 @@ eatz.EditView = Backbone.View.extend({
                 }
             );
         }
+    },
+
+    geoAddressField: function(lat, lon) {
+        var self = this;
+        $.ajax({
+            type: "GET",
+            url: "https://geocoder.ca",
+            data: {"latt": lat, "longt": lon, "geoit": "XML", "reverse": 1},
+            success: function (res) {
+                console.log(res);
+                console.log(res.getElementsByTagName("city")[0].childNodes[0].nodeValue);
+                self.setAddress(res);
+            }
+        });
+    },
+
+    setAddress: function (res) {
+        this.$("#addressCity").val(res.getElementsByTagName("city")[0].childNodes[0].nodeValue);
+        this.$("#addressStreet").val(res.getElementsByTagName("staddress")[0].childNodes[0].nodeValue);
+        this.$("#addressNumber").val(res.getElementsByTagName("stnumber")[0].childNodes[0].nodeValue);
+        this.$("#province").val(res.getElementsByTagName("prov")[0].childNodes[0].nodeValue);
     },
     
     setImage: function() {
