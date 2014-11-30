@@ -2,6 +2,7 @@ var eatz =  eatz || {};
 
 eatz.DishesView = Backbone.View.extend({
 
+    geolocationSupported: true,
     //An array of all DishViews
     dishViews : [],
 
@@ -28,6 +29,10 @@ eatz.DishesView = Backbone.View.extend({
         this.listenTo(eatz.Dishes, "sort:venue", function(){
             console.log("event listened: venue");
             self.sortDishes("venue");
+        });       
+        this.listenTo(eatz.Dishes, "sort:distance", function(){
+            console.log("event listened: distance");
+            self.sortDishes("distance");
         });
         console.log("browse view ready to listen");
     },
@@ -77,10 +82,36 @@ eatz.DishesView = Backbone.View.extend({
     },
 
     sortDishes: function (value) {
-        eatz.Dishes.comparator = value;
-        eatz.Dishes.sort();
-        this.render();
-        this.loadCollection();
+        if (value == "distance") {
+            console.log("Sorting by distance");
+            var self = this;
+            navigator.geolocation.getCurrentPosition(function(pos) {
+                eatz.Dishes.comparator = function (a, b) {
+                    var alatd = a.get("lat") - pos.coords.latitude;
+                    var alond = a.get("lon") - pos.coords.longitude;
+                    var adist = Math.pow(Math.pow(alatd, 2) + Math.pow(alond, 2), 1/2);
+                    var blatd = b.get("lat") - pos.coords.latitude;
+                    var blond = b.get("lon") - pos.coords.longitude;
+                    var bdist = Math.pow(Math.pow(blatd, 2) + Math.pow(blond, 2), 1/2);
+                    if (adist < bdist) {
+                        return -1;
+                    } else if (adist > bdist) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                }
+                eatz.Dishes.sort();
+                self.render();
+                self.loadCollection();
+            });
+        } else {
+            console.log("Sorting");
+            eatz.Dishes.comparator = value;
+            eatz.Dishes.sort();
+            this.render();
+            this.loadCollection();
+        }
     }
 
 });
