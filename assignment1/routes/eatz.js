@@ -26,6 +26,8 @@ var DishScheme = new mongoose.Schema({
     province: { type: String, required: true },
     website: { type: String, required: false },
     uid: { type: String, required: true},
+    lat: { type: Number, required: true},
+    lon: { type: Number, required: true}
 });
 
 var UserScheme = new mongoose.Schema({
@@ -211,6 +213,8 @@ exports.addDish = function(req, res){
                 dish.province = req.body.province;
                 dish.website = req.body.website;
                 dish.uid = req.session.userid;
+                dish.lat = req.body.lat;
+                dish.lon = req.body.lon;
                 dish.save(function (err, result) {
                     if (!err){
                         console.log(result.id);
@@ -251,6 +255,8 @@ exports.editDish = function(req, res){
                     dish.city = req.body.city;
                     dish.province = req.body.province;
                     dish.website = req.body.website;
+                    dish.lat = req.body.lat;
+                    dish.lon = req.body.lon;
                     dish.save(function (saveError, saveResult){
                         if (!saveError){
                             console.log(saveResult.id);

@@ -153,48 +153,64 @@ eatz.EditView = Backbone.View.extend({
     saveModel: function (res){
         var self = this;
         eatz.utils.clearNotifications();
-        if (this.did != ""){ //Editing a dish
-            console.log("valid edit");
-            eatz.Dishes.get(this.did).set(this.newAttributes());
-            if (res) {
-                eatz.Dishes.get(this.did).set("image", res);
-            }
-            eatz.Dishes.get(this.did).save(null, {
-                wait: true,
-                success: function (model, res) {
-                    document.location.href = "#dishes"; //Redirect page to the DishesView
-                    eatz.utils.showNotification("alert-success", "Ok.", "You've modified your dish.");
-                    self.selectBrowseDishes(); //Put active class in the DishesView header button
-                    self.resetForms(); //Clear the input fields
-                },
-                error: function(model, err) {
-                    eatz.utils.showNotification("alert-error", "Uh-Oh!", err.responseText);
-                    eatz.utils.checkAuth();
+        this.geoGetLatAndLon(function (lnl) { 
+            if (self.did != ""){ //Editing a dish
+                console.log("valid edit");
+                eatz.Dishes.get(self.did).set(self.newAttributes());
+                if ( lnl.getElementsByTagName("error").length == 0 ){
+                    console.log("addr found");
+                    eatz.Dishes.get(self.did).set("lat", lnl.getElementsByTagName("latt")[0].childNodes[0].nodeValue);
+                    eatz.Dishes.get(self.did).set("lon", lnl.getElementsByTagName("longt")[0].childNodes[0].nodeValue);
+                } else {
+                    console.log("addr not found");
                 }
-            });
-        } else { //Adding a dish
-            console.log("valid add");
-            var dish = new eatz.DishModel();
-            dish.set(this.newAttributes());
-            if (res) {
-                dish.set("image", res);
-            }
-            eatz.Dishes.add(dish);
-            dish.save(null, {
-                wait: true,
-                success: function (model, res) {
-                    document.location.href = "#dishes"; //Redirect page to the DishesView
-                    eatz.utils.showNotification("alert-success", "Ok.", "You've added a new dish.");
-                    self.selectBrowseDishes(); //Put active class in the DishesView header button
-                    self.resetForms(); //Clear the input fields
-                },
-                error: function(model, err) {
-                    eatz.Dishes.remove(model); // Delete the model instance if failed to sync.
-                    eatz.utils.showNotification("alert-error", "Uh-Oh!", err.responseText);
-                    eatz.utils.checkAuth();
+                if (res) {
+                    eatz.Dishes.get(self.did).set("image", res);
                 }
-            });
-        }
+                eatz.Dishes.get(self.did).save(null, {
+                    wait: true,
+                    success: function (model, res) {
+                        document.location.href = "#dishes"; //Redirect page to the DishesView
+                        eatz.utils.showNotification("alert-success", "Ok.", "You've modified your dish.");
+                        self.selectBrowseDishes(); //Put active class in the DishesView header button
+                        self.resetForms(); //Clear the input fields
+                    },
+                    error: function(model, err) {
+                        eatz.utils.showNotification("alert-error", "Uh-Oh!", err.responseText);
+                        eatz.utils.checkAuth();
+                    }
+                });
+            } else { //Adding a dish
+                console.log("valid add");
+                var dish = new eatz.DishModel();
+                dish.set(self.newAttributes());
+                if ( lnl.getElementsByTagName("error").length == 0 ){
+                    console.log("addr found");
+                    dish.set("lat", lnl.getElementsByTagName("latt")[0].childNodes[0].nodeValue);
+                    dish.set("lon", lnl.getElementsByTagName("longt")[0].childNodes[0].nodeValue);
+                } else {
+                    console.log("addr not found");
+                }
+                if (res) {
+                    dish.set("image", res);
+                }
+                eatz.Dishes.add(dish);
+                dish.save(null, {
+                    wait: true,
+                    success: function (model, res) {
+                        document.location.href = "#dishes"; //Redirect page to the DishesView
+                        eatz.utils.showNotification("alert-success", "Ok.", "You've added a new dish.");
+                        self.selectBrowseDishes(); //Put active class in the DishesView header button
+                        self.resetForms(); //Clear the input fields
+                    },
+                    error: function(model, err) {
+                        eatz.Dishes.remove(model); // Delete the model instance if failed to sync.
+                        eatz.utils.showNotification("alert-error", "Uh-Oh!", err.responseText);
+                        eatz.utils.checkAuth();
+                    }
+                });
+            }
+        });
 
         //eatz.Dishes.create(this.newAttributes());
         //this.addOne(dish);
@@ -320,7 +336,10 @@ eatz.EditView = Backbone.View.extend({
         this.clearErrors();
         this.liveValidate();
         this.setImage();
-        this.setMap(); // Set long and lat values for 2.2
+        // Set long and lat values for 2.2
+        console.log(eatz.Dishes.get(this.did).get("lat"));
+        console.log(eatz.Dishes.get(this.did).get("lon"));
+        this.setMap(eatz.Dishes.get(this.did).get("lat"), eatz.Dishes.get(this.did).get("lon")); 
     },
 
     setMap: function(lat, lng){
@@ -342,7 +361,7 @@ eatz.EditView = Backbone.View.extend({
                 function(pos){
                     self.setMap(pos.coords.latitude, pos.coords.longitude);
                     console.log("Set position " + pos.coords.latitude + ", " + pos.coords.longitude);
-                    self.geoAddressField(pos.coords.latitude, pos.coords.longitude);
+                    self.geoSetAddressField(pos.coords.latitude, pos.coords.longitude);
                 },
                 function(){
                     eatz.utils.showNotification("alert-error", "Uh-Oh!", "We weren't able to capture your location - did you grant us permission to do so? ");
@@ -356,7 +375,7 @@ eatz.EditView = Backbone.View.extend({
         }
     },
 
-    geoAddressField: function(lat, lon) {
+    geoSetAddressField: function(lat, lon) {
         var self = this;
         $.ajax({
             type: "GET",
@@ -366,6 +385,23 @@ eatz.EditView = Backbone.View.extend({
                 console.log(res);
                 console.log(res.getElementsByTagName("city")[0].childNodes[0].nodeValue);
                 self.setAddress(res);
+            }
+        });
+    },
+
+    geoGetLatAndLon: function(callback) {
+    var fullAddress =  _.escape(this.$addressNumber.val().trim()) + " " +
+                       _.escape(this.$addressStreet.val().trim()) + " " +
+                       _.escape(this.$addressCity.val().trim()) + " " +
+                       _.escape(this.$province.val().trim());
+    var self = this;
+        $.ajax({
+            type: "GET",
+            url: "https://geocoder.ca",
+            data: {"locate": fullAddress, "geoit": "XML"},
+            success: function (res) {
+                console.log(res);
+                callback(res);
             }
         });
     },

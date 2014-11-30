@@ -15,6 +15,8 @@ eatz.DishModel = Backbone.Model.extend({
         province: "ON",
         website: "",
         uid: "",
+        lat: "43.784925",
+        lon: "-79.185323"
     }
 
 });
