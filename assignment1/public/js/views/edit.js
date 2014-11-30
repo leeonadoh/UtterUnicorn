@@ -171,11 +171,13 @@ eatz.EditView = Backbone.View.extend({
                     wait: true,
                     success: function (model, res) {
                         document.location.href = "#dishes"; //Redirect page to the DishesView
+                        self.$("#save").attr("disabled", false);
                         eatz.utils.showNotification("alert-success", "Ok.", "You've modified your dish.");
                         self.selectBrowseDishes(); //Put active class in the DishesView header button
                         self.resetForms(); //Clear the input fields
                     },
                     error: function(model, err) {
+                        self.$("#save").attr("disabled", false);
                         eatz.utils.showNotification("alert-error", "Uh-Oh!", err.responseText);
                         eatz.utils.checkAuth();
                     }
@@ -199,12 +201,14 @@ eatz.EditView = Backbone.View.extend({
                     wait: true,
                     success: function (model, res) {
                         document.location.href = "#dishes"; //Redirect page to the DishesView
+                        self.$("#save").attr("disabled", false);
                         eatz.utils.showNotification("alert-success", "Ok.", "You've added a new dish.");
                         self.selectBrowseDishes(); //Put active class in the DishesView header button
                         self.resetForms(); //Clear the input fields
                     },
                     error: function(model, err) {
                         eatz.Dishes.remove(model); // Delete the model instance if failed to sync.
+                        self.$("#save").attr("disabled", false);
                         eatz.utils.showNotification("alert-error", "Uh-Oh!", err.responseText);
                         eatz.utils.checkAuth();
                     }
@@ -222,6 +226,7 @@ eatz.EditView = Backbone.View.extend({
         eatz.utils.clearNotifications();
         if (this.validate()) { //Check if fields are valid first
             console.log("valid input");
+            this.$("#save").attr("disabled", true);
             if (!$.isEmptyObject(this.image)) {
                 this.saveImage(this.image); //uploads the image to the database
             } else {
