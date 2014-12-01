@@ -246,6 +246,12 @@ exports.editDish = function(req, res){
                 res.send(404, "Your dish cannot be found - try refreshing your browser.");
             } else {
                 if (dish.uid === req.session.userid){ // User is creator of this dish.
+                    if (dish.image != "img/placeholder" && 
+                        fs.existsSync("public/img/uploads/" + dish.image + "360x270.png") &&
+                        fs.existsSync("public/img/uploads/" + dish.image + "240x180.png")) {
+                            fs.unlinkSync("public/img/uploads/" + dish.image + "360x270.png");
+                            fs.unlinkSync("public/img/uploads/" + dish.image + "240x180.png");
+                    }
                     dish.image = req.body.image;
                     dish.name = req.body.name;
                     dish.venue = req.body.venue;
@@ -285,9 +291,11 @@ exports.deleteDish = function(req, res){
                 res.send(404, "Your dish cannot be found - try refreshing your browser.");
             } else { // Dish to remove found.
                 if (dish.uid === req.session.userid){ // User authorized to delete dish.
-                    if (dish.image != "img/placeholder"){
-                        fs.unlinkSync("public/img/uploads/" + dish.image + "360x270.png");
-                        fs.unlinkSync("public/img/uploads/" + dish.image + "240x180.png");
+                    if (dish.image != "img/placeholder" && 
+                        fs.existsSync("public/img/uploads/" + dish.image + "360x270.png") &&
+                        fs.existsSync("public/img/uploads/" + dish.image + "240x180.png")) {
+                            fs.unlinkSync("public/img/uploads/" + dish.image + "360x270.png");
+                            fs.unlinkSync("public/img/uploads/" + dish.image + "240x180.png");
                     }
                     dish.remove(function(removeErr, removeRes) {
                         if (!removeErr){
