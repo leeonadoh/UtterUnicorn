@@ -1,0 +1,3 @@
+No extra features have been implemented. However, the aesthetics of our user interface is something to be mentioned. 
+
+A last minute bug relating to image upload was found, but was not fixed. The bug involves images being uploaded even when the user is not authenticated. Steps to fix this bug would be to have the server's image handler to return an error when an upload is requested from an unauthenticated user. The client code will then receive the error, and display the correct notifications. 
